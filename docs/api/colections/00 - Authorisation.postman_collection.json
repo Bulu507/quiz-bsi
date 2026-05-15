@@ -1,0 +1,66 @@
+{
+  "info": {
+    "_postman_id": "bba09eac-889e-45e6-a37d-a857d0d973a0",
+    "name": "00 - Authorisation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54755041"
+  },
+  "item": [
+    {
+      "name": "Login (Default)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/login",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "login"
+          ]
+        },
+        "description": "**Test Admin:**\n\n- Username: admin\n    \n- Password: admin\n    \n\n**Test Peserta:**\n\n- Username: peserta\n    \n- Password: peserta"
+      },
+      "response": []
+    },
+    {
+      "name": "Login (Firebase)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "XXX",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/login/fb",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "login",
+            "fb"
+          ]
+        },
+        "description": "**TIDAK MENGGUNAKAN JSON BODY, TAPI AUTHORISATION HEADER!!**"
+      },
+      "response": []
+    }
+  ]
+}
