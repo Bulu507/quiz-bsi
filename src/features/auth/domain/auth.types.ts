@@ -7,6 +7,7 @@ export interface User {
   fullName: string;
   avatarUrl: string | null;
   role: UserRole;
+  lastLoginAt: string | null;
 }
 
 export interface LoginCredentials {
@@ -28,4 +29,26 @@ export interface AuthResponse {
 
 export interface FirebaseLoginPayload {
   idToken: string;
+}
+
+export type BackendUserRole = "admin" | "peserta";
+
+export interface BackendAuthUser {
+  id: number;
+  fb_uid: string | null;
+  fb_provider: string | null;
+  name: string;
+  role: BackendUserRole;
+  username: string;
+  created_at: string;
+  updated_at: string;
+  last_login_at: string | null;
+}
+
+export interface BackendAuthResponse {
+  message: string;
+  data: {
+    user: BackendAuthUser;
+    token: string;
+  };
 }
