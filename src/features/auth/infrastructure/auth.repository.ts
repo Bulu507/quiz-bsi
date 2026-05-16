@@ -1,11 +1,23 @@
 import type { IAuthRepository } from "../domain/IAuthRepository.interface";
-import type { AuthResponse, BackendAuthResponse, BackendUserRole, User, UserRole } from "../domain/auth.types";
-import { loginApi, loginFirebaseApi } from "./auth.api";
+import type { AuthResponse, BackendAuthResponse, BackendAuthUser, BackendMeResponse, BackendUserRole, User, UserRole } from "../domain/auth.types";
+import { getMeApi, loginApi, loginFirebaseApi } from "./auth.api";
 
 function mapBackendRole(role: BackendUserRole): UserRole {
   if (role === "admin") return "ADMIN";
   if (role === "peserta") return "PESERTA";
   throw new Error(`Role auth tidak dikenal: ${role satisfies never}`);
+}
+
+function normalizeUser(rawUser: BackendAuthUser): User {
+  return {
+    id: String(rawUser.id),
+    username: rawUser.username,
+    email: null,
+    fullName: rawUser.name,
+    avatarUrl: null,
+    role: mapBackendRole(rawUser.role),
+    lastLoginAt: rawUser.last_login_at
+  };
 }
 
 function normalizeAuthResponse(payload: BackendAuthResponse): AuthResponse {
@@ -17,18 +29,22 @@ function normalizeAuthResponse(payload: BackendAuthResponse): AuthResponse {
     throw new Error("Response auth tidak menyertakan data.user.");
   }
 
-  const rawUser = payload.data.user;
-  const user: User = {
-    id: String(rawUser.id),
-    username: rawUser.username,
-    email: null,
-    fullName: rawUser.name,
-    avatarUrl: null,
-    role: mapBackendRole(rawUser.role),
-    lastLoginAt: rawUser.last_login_at
-  };
+  return { token: payload.data.token, user: normalizeUser(payload.data.user) };
+}
 
-  return { token: payload.data.token, user };
+function normalizeMeResponse(payload: BackendMeResponse): User {
+  const rawUser =
+    "data" in payload
+      ? "user" in payload.data
+        ? payload.data.user
+        : payload.data
+      : payload;
+
+  if (!rawUser) {
+    throw new Error("Response /me tidak menyertakan data user.");
+  }
+
+  return normalizeUser(rawUser);
 }
 
 export const authRepository: IAuthRepository = {
@@ -41,32 +57,13 @@ export const authRepository: IAuthRepository = {
     const session = normalizeAuthResponse(response);
     return { ...session, user: { ...session.user, role: "PESERTA" } };
   },
-  async register(payload) {
-    return {
-      token: "mock-token",
-      user: {
-        id: "user-2",
-        username: payload.email,
-        email: payload.email,
-        fullName: payload.fullName,
-        avatarUrl: null,
-        role: payload.role === "ADMIN" ? "ADMIN" : "PESERTA",
-        lastLoginAt: null
-      }
-    };
+  async register() {
+    throw new Error("Endpoint register belum tersedia di collection API.");
   },
   async logout() {
     return undefined;
   },
   async getMe() {
-    return {
-      id: "user-1",
-      username: "admin",
-      email: null,
-      fullName: "Pengajar Quiz-BSI",
-      avatarUrl: null,
-      role: "ADMIN",
-      lastLoginAt: null
-    };
+    return normalizeMeResponse(await getMeApi());
   }
 };

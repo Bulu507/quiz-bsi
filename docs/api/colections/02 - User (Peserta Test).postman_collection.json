@@ -1,0 +1,239 @@
+{
+  "info": {
+    "_postman_id": "b1462112-8d03-42b5-8239-046332a10208",
+    "name": "02 - User (Peserta Test)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54755041"
+  },
+  "item": [
+    {
+      "name": "02.01 - Dashboard/General",
+      "item": []
+    },
+    {
+      "name": "02.02 - Quiz (start sampai view result)",
+      "item": [
+        {
+          "name": "Start Quiz",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_jenis_tes\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Continue Quiz",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz/:id_attempt/continue",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz",
+                ":id_attempt",
+                "continue"
+              ],
+              "variable": [
+                {
+                  "key": "id_attempt",
+                  "value": "41"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Attempt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz/:id_attempt/submit",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz",
+                ":id_attempt",
+                "submit"
+              ],
+              "variable": [
+                {
+                  "key": "id_attempt",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "View Quiz Results",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz/:id_attempt/result?no_urut=1&length=10",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz",
+                ":id_attempt",
+                "result"
+              ],
+              "query": [
+                {
+                  "key": "no_urut",
+                  "value": "1"
+                },
+                {
+                  "key": "length",
+                  "value": "10"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id_attempt",
+                  "value": "41"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch Next Question(s) by Komponen",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz/:id_attempt/questions?no_urut=9&length=20",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz",
+                ":id_attempt",
+                "questions"
+              ],
+              "query": [
+                {
+                  "key": "no_urut",
+                  "value": "9"
+                },
+                {
+                  "key": "length",
+                  "value": "20"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id_attempt",
+                  "value": "41"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Answers",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "[{\r\n    \"no_urut\": 1,\r\n    \"id_jawaban\": 222\r\n}, {\r\n    \"no_urut\": 2,\r\n    \"id_jawaban\": 9123\r\n}]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz/:id_attempt/answers",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz",
+                ":id_attempt",
+                "answers"
+              ],
+              "variable": [
+                {
+                  "key": "id_attempt",
+                  "value": "41"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{TOKEN_PST}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

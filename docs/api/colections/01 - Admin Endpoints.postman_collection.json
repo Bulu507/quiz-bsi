@@ -1,0 +1,908 @@
+{
+  "info": {
+    "_postman_id": "9fe9bc49-086d-4182-af7c-9d94849b40b1",
+    "name": "01 - Admin Endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54755041"
+  },
+  "item": [
+    {
+      "name": "01.01 - Kategori Soal",
+      "item": [
+        {
+          "name": "Index (Get All)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/kategori?&start=&length&search=",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "kategori"
+              ],
+              "query": [
+                {
+                  "key": null,
+                  "value": null
+                },
+                {
+                  "key": "start",
+                  "value": ""
+                },
+                {
+                  "key": "length",
+                  "value": null
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/kategori/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "kategori",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get kategori dan berbagai subkategori yang ada di dalamnya juga"
+          },
+          "response": []
+        },
+        {
+          "name": "Store",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/kategori",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "kategori"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/kategori/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "kategori",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "14"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/kategori/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "kategori",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "14"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01.02 - Subkategori Soal",
+      "item": [
+        {
+          "name": "Index (Get All)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/subkategori?&start=20&length=20&search=",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "subkategori"
+              ],
+              "query": [
+                {
+                  "key": null,
+                  "value": null
+                },
+                {
+                  "key": "start",
+                  "value": "20"
+                },
+                {
+                  "key": "length",
+                  "value": "20"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/subkategori/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "subkategori",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "21"
+                }
+              ]
+            },
+            "description": "Sekaligus get **jumlah soal** dalam subkategori tersebut"
+          },
+          "response": []
+        },
+        {
+          "name": "Store",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_kategori\": 1,\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/subkategori",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "subkategori"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_kategori\": 2,\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/subkategori/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "subkategori",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "52"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/subkategori/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "subkategori",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "52"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01.03 - Bank Soal",
+      "item": [
+        {
+          "name": "Index (Get All)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/soal?start=&length=&search=&id_kategori&id_subkategori&include_opsi=true",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "soal"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": ""
+                },
+                {
+                  "key": "length",
+                  "value": ""
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "id_kategori",
+                  "value": null,
+                  "description": "Ignored if id_subkategori ada isi"
+                },
+                {
+                  "key": "id_subkategori",
+                  "value": null
+                },
+                {
+                  "key": "include_opsi",
+                  "value": "true",
+                  "description": "\"true\" | \"false\", true if mau munculkan option juga, variabel: \"soal_opsi\""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/soal/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "soal",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1548"
+                }
+              ]
+            },
+            "description": "Sekaligus get **jumlah soal** dalam subkategori tersebut"
+          },
+          "response": []
+        },
+        {
+          "name": "Store",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"<p>Test soal HTML imput.</p>\",\r\n    \"pembahasan\": \"<div style='font-color: green'>Aman! Tidak perlu ada pembahasan!</div>\",\r\n    \"trik_cepat\": \"Trik cepat opsional, tidak wajib diisi. Default: NULL\",\r\n    \"id_subkat\": 4,\r\n    \"options\": [\r\n        {\r\n            \"content\": \"<img src='https://avatars.githubusercontent.com/u/276238692?v=4' /><p>Gambar di atas merupakan SIGMA-MIL ciptaan Sukma Jenny</p>\",\r\n            \"poin\": 5\r\n        },\r\n        {\r\n            \"content\": \"<img src='https://avatars.githubusercontent.com/u/64875622?v=4' /><p>Gambar di atas pp Jolly GitHub</p>\",\r\n            \"poin\": 0\r\n        },\r\n        {\r\n            \"content\": \"<a href='https://github.com/JollyFrankle/JBotNodeJS'>Jolly Bot Node JS</p>\",\r\n            \"poin\": 2\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/soal",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "soal"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"<p>Test soal HTML imput.</p>\",\r\n    \"pembahasan\": \"<div style='font-color: green'>Aman! Tidak perlu ada pembahasan!</div>\",\r\n    \"trik_cepat\": \"Trik cepat opsional, tidak wajib diisi. Default: NULL\",\r\n    \"id_subkat\": 4,\r\n    \"options\": [\r\n        {\r\n            \"content\": \"<img src='https://avatars.githubusercontent.com/u/276238692?v=4' /><p>Gambar di atas merupakan SIGMA-MIL ciptaan Sukma Jenny</p>\",\r\n            \"poin\": 5\r\n        },\r\n        {\r\n            \"content\": \"<img src='https://avatars.githubusercontent.com/u/64875622?v=4' /><p>Gambar di atas pp Jolly GitHub</p>\",\r\n            \"poin\": 0\r\n        },\r\n        {\r\n            \"content\": \"<a href='https://github.com/JollyFrankle/JBotNodeJS'>Jolly Bot Node JS</p>\",\r\n            \"poin\": 2\r\n        },\r\n        {\r\n            \"content\": \"TES PENAMBAHAN 1 LAGI OPTION. 'poin' itu rentang -5 s.d. 5 yaa!\",\r\n            \"poin\": -5\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/soal/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "soal",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1549"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama\": \"Ujicoba kategori\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/soal/:id",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "soal",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1549"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Import Soal",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "id_subkategori",
+                  "value": "21",
+                  "type": "text",
+                  "uuid": "29d3c800-f0fe-4e5c-8589-c678494b876c"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "64a4d72b-37f7-4742-b63d-724df3ed31a0",
+                  "src": "/D:/NodeJS Projects/BuSriIswati-QUIZ/src/playground/Bank Soal Import Gambar2.xlsx"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/soal/import",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "soal",
+                "import"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01.04 - Quiz dan Komponen Quiz (ON PROGRESS)",
+      "item": [
+        {
+          "name": "Komponen Quiz",
+          "item": [
+            {
+              "name": "Show Quiz + Komponen (alternatif)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}/adm/quiz/:id_quiz/komponen",
+                  "host": [
+                    "{{BASE_URL}}"
+                  ],
+                  "path": [
+                    "adm",
+                    "quiz",
+                    ":id_quiz",
+                    "komponen"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id_quiz",
+                      "value": "3"
+                    }
+                  ]
+                },
+                "description": "**Sebenarnya function yg dipake sama persis dengan Show Quiz + Komponen** (`/adm/quiz/:id`)"
+              },
+              "response": []
+            },
+            {
+              "name": "Append Komponen",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nama\": \"Default sama dengan nama subkategori\",\r\n    \"jlh_soal\": 10,\r\n    \"passing_grade\": 0, // 0 berarti tanpa passing grade\r\n    \"time_mins\": 10, // Untuk section yang ada timer, isikan angka. Jika tidak pake timer, NULL atau hapus saja jangan 0\r\n    \"selector\": {\r\n        \"type\": \"subkategori\",\r\n        \"id\": 10\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/adm/quiz/:id_quiz/komponen",
+                  "host": [
+                    "{{BASE_URL}}"
+                  ],
+                  "path": [
+                    "adm",
+                    "quiz",
+                    ":id_quiz",
+                    "komponen"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id_quiz",
+                      "value": "3"
+                    }
+                  ]
+                },
+                "description": "\"nama\" komponen mungkin saja by default sama dengan nama kategori/subkategori, kemudian bisa diedit oleh admin"
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Komponen",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"nama\": \"Default sama dengan nama subkategori\",\r\n    \"jlh_soal\": 20,\r\n    \"passing_grade\":  50, // 0 berarti tanpa passing grade\r\n    \"time_mins\": null, // Untuk section yang ada timer, isikan angka. Jika tidak pake timer, NULL atau hapus saja jangan 0\r\n    \"selector\": {\r\n        \"type\": \"kategori\",\r\n        \"id\": 3\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/adm/quiz/:id_quiz/komponen/:id_komponen",
+                  "host": [
+                    "{{BASE_URL}}"
+                  ],
+                  "path": [
+                    "adm",
+                    "quiz",
+                    ":id_quiz",
+                    "komponen",
+                    ":id_komponen"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id_quiz",
+                      "value": "3"
+                    },
+                    {
+                      "key": "id_komponen",
+                      "value": "14"
+                    }
+                  ]
+                },
+                "description": "\"nama\" komponen mungkin saja by default sama dengan nama kategori/subkategori, kemudian bisa diedit oleh admin"
+              },
+              "response": []
+            },
+            {
+              "name": "Reorder Komponen",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"no_urut_baru\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/adm/quiz/:id_quiz/komponen/:id_komponen/reorder",
+                  "host": [
+                    "{{BASE_URL}}"
+                  ],
+                  "path": [
+                    "adm",
+                    "quiz",
+                    ":id_quiz",
+                    "komponen",
+                    ":id_komponen",
+                    "reorder"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id_quiz",
+                      "value": "3"
+                    },
+                    {
+                      "key": "id_komponen",
+                      "value": "14"
+                    }
+                  ]
+                },
+                "description": "Memindahkan id_komponen tersebut ke no_urut yang baru\n\nContoh:\n\n**ID Komponen** **`7`** **dipindahkan dari no urut sekarang 5 ke 2, maka:**\n\n- `id_komponen`: 7\n    \n- `no_urut_baru`: 2\n    \n\n| **No. Urut** | **ID Komponen Lama** | **ID Komponen Baru** |\n| --- | --- | --- |\n| 1 | 3 | 3 |\n| 2 | 4 | **7 (#)** |\n| 3 | 5 | 4 \\* |\n| 4 | 6 | 5 \\* |\n| 5 | **7 (#)** | 6 \\* |\n| 6 | 8 | 8 |\n| 7 | 9 | 9 |\n| 8 | 10 | 10 |\n\n> ID 4 5 6 bergeser ke bawah, 7 menempati urutan 2 sekarang"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Komponen dari Quiz",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}/adm/quiz/:id_quiz/komponen/:id_komponen",
+                  "host": [
+                    "{{BASE_URL}}"
+                  ],
+                  "path": [
+                    "adm",
+                    "quiz",
+                    ":id_quiz",
+                    "komponen",
+                    ":id_komponen"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id_quiz",
+                      "value": "3"
+                    },
+                    {
+                      "key": "id_komponen",
+                      "value": "14"
+                    }
+                  ]
+                },
+                "description": "Memindahkan id_komponen tersebut ke no_urut yang baru\n\nContoh:\n\n**ID Komponen** **`7`** **dipindahkan dari no urut sekarang 5 ke 2, maka:**\n\n- `id_komponen`: 7\n    \n- `no_urut_baru`: 2\n    \n\n| **No. Urut** | **ID Komponen Lama** | **ID Komponen Baru** |\n| --- | --- | --- |\n| 1 | 3 | 3 |\n| 2 | 4 | **7 (#)** |\n| 3 | 5 | 4 \\* |\n| 4 | 6 | 5 \\* |\n| 5 | **7 (#)** | 6 \\* |\n| 6 | 8 | 8 |\n| 7 | 9 | 9 |\n| 8 | 10 | 10 |\n\n> ID 4 5 6 bergeser ke bawah, 7 menempati urutan 2 sekarang"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Index (Get All) Quiz",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/quiz?start=&length=&search=",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "quiz"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": ""
+                },
+                {
+                  "key": "length",
+                  "value": ""
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show Quiz + Komponen",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/quiz/:id_quiz",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "quiz",
+                ":id_quiz"
+              ],
+              "variable": [
+                {
+                  "key": "id_quiz",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Quiz",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama_tes\": \"Psikotest 1A\",\r\n    \"time_mins\": 30,\r\n    \"passing_grade\": 95\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/quiz",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "quiz"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Quiz (quiz saja, komp tdk)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nama_tes\": \"Psikotest 2A\",\r\n    \"time_mins\": 45,\r\n    \"passing_grade\": 70\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/adm/quiz/:id_quiz",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "quiz",
+                ":id_quiz"
+              ],
+              "variable": [
+                {
+                  "key": "id_quiz",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Quiz & Komponen",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/quiz/:id_quiz",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "quiz",
+                ":id_quiz"
+              ],
+              "variable": [
+                {
+                  "key": "id_quiz",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "**\"Quiz\" adalah yang akan dikerjakan peserta**\n\n\"Komponen Quiz\" adalah apa saja yang akan dikerjakan (subkategori/kategori apa, berapa soal, berapa waktu per bagian)\n\n**1 Quiz terdiri atas banyak komponen (1 to many)**\n\n1 komponen itu ada \"selector\": mau randomly dipilih dari **Kategori** XXX atau **Subkategori** XXX? Terus berapa banyak soal yang mau dipilih secara acak dari situ?\n\n- **REORDER KOMPONEN:** Reorder urutan tampil komponen quiz saat ini **by ID komponen**, kemudian **mau ditempatkan di nomor urut ke-berapa sekarang?**"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{TOKEN_ADMIN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

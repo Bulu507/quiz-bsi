@@ -90,6 +90,39 @@ export function ProgressBar({ value }: { value: number }) {
   );
 }
 
+export function EmptyState({
+  action,
+  description,
+  title
+}: {
+  action?: ReactNode;
+  description: string;
+  title: string;
+}) {
+  return (
+    <section className="empty-state">
+      <div className="empty-icon">!</div>
+      <h2>{title}</h2>
+      <p className="muted">{description}</p>
+      {action ? <div className="actions">{action}</div> : null}
+    </section>
+  );
+}
+
+export function LoadingSkeleton({ rows = 3 }: { rows?: number }) {
+  return (
+    <div className="list">
+      {Array.from({ length: rows }, (_, index) => (
+        <div className="card skeleton-card" key={index}>
+          <span />
+          <strong />
+          <p />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Brand({ dark = false }: { dark?: boolean }) {
   return (
     <Link className={`brand ${dark ? "dark" : ""}`} href="/">

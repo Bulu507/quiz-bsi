@@ -61,6 +61,34 @@
         "description": "**TIDAK MENGGUNAKAN JSON BODY, TAPI AUTHORISATION HEADER!!**"
       },
       "response": []
+    },
+    {
+      "name": "Get Me",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN_ADMIN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/me",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "me"
+          ]
+        },
+        "description": "**PENTING! Jangan lupa send auth token!**"
+      },
+      "response": []
     }
   ]
 }

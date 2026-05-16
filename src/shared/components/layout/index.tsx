@@ -8,7 +8,7 @@ const instructorNav = [
   { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
   { href: "/questions", label: "Bank Soal", icon: BookOpen },
   { href: "/packages/new", label: "Paket Ujian", icon: Boxes },
-  { href: "/classes/demo", label: "Kelas", icon: GraduationCap }
+  { href: "/classes", label: "Kelas", icon: GraduationCap }
 ];
 
 export function InstructorShell({

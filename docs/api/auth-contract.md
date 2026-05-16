@@ -51,3 +51,13 @@ Authorization: Bearer <firebase-id-token>
 Response mengikuti bentuk `/login`.
 
 Catatan frontend: role Google login selalu dipaksa menjadi `PESERTA`.
+
+## GET `/me`
+
+Request memakai Bearer token dari session login:
+
+```http
+Authorization: Bearer <jwt>
+```
+
+Frontend menerima response profil dalam bentuk langsung user, `{ "data": user }`, atau `{ "data": { "user": user } }`, lalu memetakan role backend seperti kontrak `/login`.

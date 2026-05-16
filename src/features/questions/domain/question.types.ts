@@ -39,6 +39,7 @@ export interface Question {
 export interface QuestionFilters {
   search?: string;
   categoryId?: string;
+  subcategoryId?: string;
   difficulty?: DifficultyLevel;
   status?: QuestionStatus;
   page?: number;

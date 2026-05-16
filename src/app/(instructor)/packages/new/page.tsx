@@ -1,11 +1,7 @@
-import { getQuestionsUseCase } from "@/features/questions/application/use-cases/get-questions.use-case";
-import { questionRepository } from "@/features/questions/infrastructure/question.repository";
 import { InstructorShell } from "@/shared/components/layout";
-import { Badge, Button, PageHeader, Panel } from "@/shared/components/ui";
+import { Button, EmptyState, PageHeader, Panel } from "@/shared/components/ui";
 
-export default async function NewPackagePage() {
-  const questions = await getQuestionsUseCase(questionRepository);
-
+export default function NewPackagePage() {
   return (
     <InstructorShell active="Paket Ujian">
       <PageHeader
@@ -24,53 +20,39 @@ export default async function NewPackagePage() {
           <div className="stack">
             <label>
               Nama paket
-              <input className="field" defaultValue="Tryout SKD Sesi 3" />
+              <input className="field" />
             </label>
             <label>
               Deskripsi
-              <textarea className="textarea" defaultValue="Simulasi SKD lengkap dengan TWK, TIU, dan TKP." />
+              <textarea className="textarea" />
             </label>
             <div className="form-grid">
               <label>
                 Durasi
-                <input className="field" defaultValue="100" />
+                <input className="field" />
               </label>
               <label>
                 Passing grade
-                <input className="field" defaultValue="300" />
+                <input className="field" />
               </label>
             </div>
             <div className="form-grid">
               <label>
                 Benar
-                <input className="field" defaultValue="+5" />
+                <input className="field" />
               </label>
               <label>
                 Salah
-                <input className="field" defaultValue="0" />
+                <input className="field" />
               </label>
             </div>
           </div>
         </Panel>
 
-        <Panel title="Pilih Soal" action={<Badge tone="blue">2 soal terpilih</Badge>}>
+        <Panel title="Pilih Soal">
           <div className="stack">
-            <input className="field" defaultValue="Pancasila" aria-label="Cari soal" />
-            {questions.data.map((question) => (
-              <label className="card" key={question.text}>
-                <span className="meta-line">
-                  <input type="checkbox" defaultChecked />
-                  <Badge tone="blue">{question.categoryName}</Badge>
-                  <Badge>{question.difficulty}</Badge>
-                </span>
-                <span className="muted">{question.text}</span>
-              </label>
-            ))}
-            <div className="meta-line">
-              <Badge tone="blue">TWK: 30</Badge>
-              <Badge tone="blue">TIU: 35</Badge>
-              <Badge tone="blue">TKP: 45</Badge>
-            </div>
+            <input className="field" aria-label="Cari soal" />
+            <EmptyState title="Belum ada soal dipilih" description="Integrasi pemilihan soal akan memakai endpoint /adm/soal pada fase package." />
           </div>
         </Panel>
       </div>

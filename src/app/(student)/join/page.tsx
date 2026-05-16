@@ -8,7 +8,7 @@ export default function JoinClassPage() {
         <PageHeader eyebrow="Kelas" title="Masukkan Kode Kelas" />
         <Panel title="Kode Join">
           <div className="stack">
-            <input className="field" defaultValue="ABC123" aria-label="Kode kelas" />
+            <input className="field" aria-label="Kode kelas" />
             <Button href="/student/dashboard" variant="primary">
               Gabung Kelas
             </Button>

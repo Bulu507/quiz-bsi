@@ -52,3 +52,10 @@ export interface BackendAuthResponse {
     token: string;
   };
 }
+
+export type BackendMeResponse =
+  | BackendAuthUser
+  | {
+      message?: string;
+      data: BackendAuthUser | { user: BackendAuthUser };
+    };

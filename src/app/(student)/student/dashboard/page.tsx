@@ -3,21 +3,21 @@ import { getAvailablePackagesUseCase } from "@/features/packages/application/use
 import { packageRepository } from "@/features/packages/infrastructure/package.repository";
 import { StudentShell } from "@/shared/components/layout";
 import { StatCard } from "@/shared/components/ui/StatCard";
-import { Badge, Button, PageHeader } from "@/shared/components/ui";
+import { Badge, Button, EmptyState, PageHeader } from "@/shared/components/ui";
 
 const statIcons = [ClipboardCheck, LineChart, Award];
 
 export default async function StudentDashboardPage() {
   const availablePackages = await getAvailablePackagesUseCase(packageRepository);
   const stats = [
-    { label: "Ujian Dikerjakan", value: "12", trend: "3 bulan terakhir" },
-    { label: "Rata-rata Nilai", value: "382", trend: "Dari maksimal 550" },
-    { label: "Sesi Terbaik", value: "438", trend: "Tryout SKD Sesi 2" }
+    { label: "Ujian Dikerjakan", value: "-", trend: "Menunggu endpoint riwayat" },
+    { label: "Rata-rata Nilai", value: "-", trend: "Menunggu endpoint analytics" },
+    { label: "Sesi Terbaik", value: "-", trend: "Menunggu endpoint result" }
   ];
 
   return (
     <StudentShell>
-      <PageHeader eyebrow="Target: SKD CPNS" title="Halo, Andini Rahma" />
+      <PageHeader eyebrow="Peserta" title="Dashboard Peserta" />
 
       <div className="stack">
         <div className="grid-3">
@@ -37,22 +37,26 @@ export default async function StudentDashboardPage() {
             <h2>Paket Ujian Tersedia</h2>
           </div>
           <div className="grid-3">
-            {availablePackages.map((item) => (
-              <article className="card package-card" key={item.title}>
-                <Badge tone="blue">{item.hasAccess ? "Akses aktif" : "Belum ada akses"}</Badge>
-                <div className="stack" style={{ gap: 8 }}>
-                  <h2>{item.title}</h2>
-                  <div className="package-meta">
-                    <span>{item.questionCount} soal</span>
-                    <span>{item.durationMinutes} menit</span>
-                    <span>Sisa: {item.maxAttempts === null ? "unlimited" : item.maxAttempts - item.attemptsUsed}</span>
+            {availablePackages.length > 0 ? (
+              availablePackages.map((item) => (
+                <article className="card package-card" key={item.id}>
+                  <Badge tone="blue">{item.hasAccess ? "Akses aktif" : "Belum ada akses"}</Badge>
+                  <div className="stack" style={{ gap: 8 }}>
+                    <h2>{item.title}</h2>
+                    <div className="package-meta">
+                      <span>{item.questionCount} soal</span>
+                      <span>{item.durationMinutes} menit</span>
+                      <span>Sisa: {item.maxAttempts === null ? "unlimited" : item.maxAttempts - item.attemptsUsed}</span>
+                    </div>
                   </div>
-                </div>
-                <Button href="/exam/demo" variant="primary">
-                  Mulai Ujian
-                </Button>
-              </article>
-            ))}
+                  <Button href={`/exam/${item.id}`} variant="primary">
+                    Mulai Ujian
+                  </Button>
+                </article>
+              ))
+            ) : (
+              <EmptyState title="Belum ada paket tersedia" description="Endpoint daftar paket peserta belum tersedia di collection API." />
+            )}
           </div>
         </section>
       </div>
