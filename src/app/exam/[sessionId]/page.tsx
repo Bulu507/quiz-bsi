@@ -1,15 +1,9 @@
-import { Button, EmptyState } from "@/shared/components/ui";
+import { ExamClient } from "./ExamClient";
 
-export default function ExamPage() {
-  return (
-    <section className="exam-screen">
-      <main className="result-layout">
-        <EmptyState
-          title="Sesi ujian belum dimuat"
-          description="Engine ujian akan menggunakan endpoint peserta /pst/quiz pada fase exam."
-          action={<Button href="/student/dashboard">Kembali ke Dashboard</Button>}
-        />
-      </main>
-    </section>
-  );
+export default function ExamPage({
+  params
+}: {
+  params: { sessionId: string };
+}) {
+  return <ExamClient packageId={params.sessionId} />;
 }

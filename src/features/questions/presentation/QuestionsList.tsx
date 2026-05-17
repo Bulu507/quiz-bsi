@@ -2,12 +2,14 @@
 
 import { Plus, Upload } from "lucide-react";
 import { EmptyState, Button, LoadingSkeleton, PageHeader } from "@/shared/components/ui";
+import { useQuestionMetadata } from "../application/hooks/useQuestionMetadata";
 import { useQuestions } from "../application/hooks/useQuestions";
 import { QuestionCard } from "./QuestionCard";
 import { QuestionFilters } from "./QuestionFilters";
 
 export function QuestionsList() {
   const { deletingId, deleteQuestion, error, filters, isLoading, meta, questions, setFilters } = useQuestions({ page: 1, limit: 10 });
+  const { categories, error: metadataError } = useQuestionMetadata();
   const page = meta?.page ?? filters.page ?? 1;
   const limit = meta?.limit ?? filters.limit ?? 10;
   const total = meta?.total ?? questions.length;
@@ -37,10 +39,11 @@ export function QuestionsList() {
         }
       />
 
-      <QuestionFilters filters={filters} onChange={setFilters} />
+      <QuestionFilters categories={categories} filters={filters} onChange={setFilters} />
 
       {isLoading ? <LoadingSkeleton rows={3} /> : null}
       {error ? <p className="badge red">{error}</p> : null}
+      {metadataError ? <p className="badge red">{metadataError}</p> : null}
       {!isLoading && !error && questions.length === 0 ? (
         <EmptyState
           title="Belum ada soal"

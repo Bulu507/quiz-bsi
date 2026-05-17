@@ -1,5 +1,5 @@
 export interface CategoryResult {
-  category: "TWK" | "TIU" | "TKP";
+  category: string;
   score: string;
   progress: number;
   status: "Lulus" | "Tidak lulus";

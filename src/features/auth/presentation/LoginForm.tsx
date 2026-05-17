@@ -6,8 +6,8 @@ import { useLogin } from "../application/hooks/useLogin";
 
 export function LoginForm() {
   const { error, isLoading, login, loginWithGoogle } = useLogin();
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("admin");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

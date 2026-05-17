@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Panel } from "@/shared/components/ui";
 import type { CreateQuestionPayload } from "../domain/IQuestionRepository.interface";
 import type { DifficultyLevel, Question, QuestionOptionLabel, QuestionStatus, QuestionType } from "../domain/question.types";
+import { useQuestionMetadata } from "../application/hooks/useQuestionMetadata";
 import { useQuestionForm } from "../application/hooks/useQuestionForm";
 import { OptionInput } from "./OptionInput";
 import { QuestionEditor } from "./QuestionEditor";
@@ -29,10 +30,10 @@ function createInitialPayload(initialData?: Question): CreateQuestionPayload {
         status: initialData.status
       }
     : {
-        categoryId: "twk",
-        categoryName: "TWK",
-        subcategoryId: "pancasila",
-        createdBy: "backend",
+        categoryId: "",
+        categoryName: "",
+        subcategoryId: "",
+        createdBy: "",
         type: "PG",
         text: "",
         imageUrl: null,
@@ -55,7 +56,31 @@ function createInitialPayload(initialData?: Question): CreateQuestionPayload {
 export function QuestionForm({ initialData }: { initialData?: Question }) {
   const router = useRouter();
   const { error, isSaving, saveQuestion } = useQuestionForm(initialData);
+  const { categories, error: metadataError, isLoading: isMetadataLoading, subcategories } = useQuestionMetadata();
   const [payload, setPayload] = useState<CreateQuestionPayload>(() => createInitialPayload(initialData));
+  const visibleSubcategories = useMemo(
+    () => subcategories.filter((subcategory) => !payload.categoryId || !subcategory.categoryId || subcategory.categoryId === payload.categoryId),
+    [payload.categoryId, subcategories]
+  );
+
+  useEffect(() => {
+    if (initialData) return;
+    if (categories.length === 0) return;
+
+    setPayload((current) => {
+      if (current.categoryId) return current;
+
+      const firstCategory = categories[0];
+      const firstSubcategory = subcategories.find((subcategory) => !subcategory.categoryId || subcategory.categoryId === firstCategory.id);
+
+      return {
+        ...current,
+        categoryId: firstCategory.id,
+        categoryName: firstCategory.name,
+        subcategoryId: firstSubcategory?.id ?? ""
+      };
+    });
+  }, [categories, initialData, subcategories]);
 
   function addOption() {
     setPayload((current) => {
@@ -114,24 +139,44 @@ export function QuestionForm({ initialData }: { initialData?: Question }) {
             Kategori
             <select
               className="select"
-              onChange={(event) => setPayload((current) => ({ ...current, categoryId: event.target.value, categoryName: event.target.selectedOptions[0].text }))}
+              disabled={isMetadataLoading}
+              onChange={(event) =>
+                setPayload((current) => {
+                  const nextCategoryId = event.target.value;
+                  const nextSubcategory = subcategories.find((subcategory) => !subcategory.categoryId || subcategory.categoryId === nextCategoryId);
+
+                  return {
+                    ...current,
+                    categoryId: nextCategoryId,
+                    categoryName: event.target.selectedOptions[0]?.text ?? "",
+                    subcategoryId: nextSubcategory?.id ?? ""
+                  };
+                })
+              }
               value={payload.categoryId}
             >
-              <option value="twk">TWK</option>
-              <option value="tiu">TIU</option>
-              <option value="tkp">TKP</option>
+              <option value="">Pilih kategori</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
           </label>
           <label>
             Subkategori
             <select
               className="select"
+              disabled={isMetadataLoading || visibleSubcategories.length === 0}
               onChange={(event) => setPayload((current) => ({ ...current, subcategoryId: event.target.value }))}
               value={payload.subcategoryId ?? ""}
             >
-              <option value="pancasila">Pancasila</option>
-              <option value="nasionalisme">Nasionalisme</option>
-              <option value="aritmetika">Aritmetika</option>
+              <option value="">Pilih subkategori</option>
+              {visibleSubcategories.map((subcategory) => (
+                <option key={subcategory.id} value={subcategory.id}>
+                  {subcategory.name}
+                </option>
+              ))}
             </select>
           </label>
           <label>
@@ -157,6 +202,7 @@ export function QuestionForm({ initialData }: { initialData?: Question }) {
           </label>
         </div>
       </Panel>
+      {metadataError ? <p className="badge red">{metadataError}</p> : null}
 
       <Panel title="Soal">
         <QuestionEditor label="Teks soal" onChange={(value) => setPayload((current) => ({ ...current, text: value }))} value={payload.text} />

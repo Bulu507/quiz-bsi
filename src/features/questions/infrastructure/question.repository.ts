@@ -5,6 +5,7 @@ import {
   deleteQuestionApi,
   getQuestionByIdApi,
   getQuestionCategoriesApi,
+  getQuestionSubcategoriesApi,
   getQuestionsApi,
   updateQuestionApi,
   uploadQuestionsExcelApi
@@ -26,13 +27,16 @@ export const questionRepository: IQuestionRepository = {
   async delete(id) {
     return deleteQuestionApi(id);
   },
-  async uploadExcel(file) {
-    return uploadQuestionsExcelApi(file);
+  async uploadExcel(file, subcategoryId) {
+    return uploadQuestionsExcelApi(file, subcategoryId);
   },
   async confirmImport(jobId) {
     return confirmQuestionsImportApi(jobId);
   },
   async getCategories() {
     return getQuestionCategoriesApi();
+  },
+  async getSubcategories(categoryId) {
+    return getQuestionSubcategoriesApi(categoryId);
   }
 };

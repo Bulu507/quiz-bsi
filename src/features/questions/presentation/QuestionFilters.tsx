@@ -1,12 +1,14 @@
 "use client";
 
 import type { ChangeEvent } from "react";
-import type { DifficultyLevel, QuestionFilters as QuestionFilterValues, QuestionStatus } from "../domain/question.types";
+import type { DifficultyLevel, QuestionCategory, QuestionFilters as QuestionFilterValues, QuestionStatus } from "../domain/question.types";
 
 export function QuestionFilters({
+  categories,
   filters,
   onChange
 }: {
+  categories: QuestionCategory[];
   filters: QuestionFilterValues;
   onChange: (filters: QuestionFilterValues) => void;
 }) {
@@ -27,9 +29,11 @@ export function QuestionFilters({
       />
       <select className="select" aria-label="Kategori" name="categoryId" onChange={updateFilter} value={filters.categoryId ?? ""}>
         <option value="">Semua kategori</option>
-        <option value="twk">TWK</option>
-        <option value="tiu">TIU</option>
-        <option value="tkp">TKP</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
       </select>
       <select
         className="select"

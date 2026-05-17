@@ -35,6 +35,26 @@ async function mockAuthBackend(page: Page) {
   await page.route(`${apiBase}/adm/quiz**`, async (route) => {
     await json(route, { data: [] });
   });
+
+  await page.route(`${apiBase}/adm/user**`, async (route) => {
+    await json(route, {
+      data: [
+        { id: 1, name: "Admin Quiz BSI", username: "admin", role: "admin", is_verified: true },
+        { id: 2, name: "Peserta Baru", username: "peserta.baru", role: "peserta", is_verified: false }
+      ],
+      recordsFiltered: 2,
+      recordsTotal: 2
+    });
+  });
+
+  await page.route(`${apiBase}/pst/quiz**`, async (route) => {
+    if (route.request().method() === "GET") {
+      await json(route, { data: [] });
+      return;
+    }
+
+    await json(route, { data: { id_attempt: "attempt-1" } });
+  });
 }
 
 async function setSession(page: Page, role: "ADMIN" | "PESERTA") {
@@ -78,6 +98,7 @@ test.describe("Week 1 Auth, Guard, and Layout", () => {
 
     await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Dashboard" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Users" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Bank Soal" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Paket Ujian" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Kelas" })).toBeVisible();
@@ -118,6 +139,18 @@ test.describe("Week 1 Auth, Guard, and Layout", () => {
 
     await page.goto("/join");
     await expect(page).toHaveURL(/\/dashboard$/);
+  });
+
+  test("admin can open user management and peserta cannot", async ({ page }) => {
+    await setSession(page, "ADMIN");
+
+    await page.goto("/users");
+    await expect(page.getByRole("heading", { name: "Manajemen User" })).toBeVisible();
+    await expect(page.getByText("Peserta Baru")).toBeVisible();
+
+    await setSession(page, "PESERTA");
+    await page.goto("/users");
+    await expect(page).toHaveURL(/\/student\/dashboard$/);
   });
 
   test("logout clears admin session and returns to login", async ({ page }) => {

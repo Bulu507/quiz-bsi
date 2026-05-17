@@ -10,6 +10,7 @@ import type {
   QuestionOption,
   QuestionOptionLabel,
   QuestionStatus,
+  QuestionSubcategory,
   QuestionType
 } from "../domain/question.types";
 
@@ -27,6 +28,25 @@ type BackendQuestionOption = {
   text?: string;
   poin?: number;
   score?: number;
+};
+
+type BackendCategory = {
+  id?: string | number;
+  nama?: string;
+  name?: string;
+  subkategori?: BackendSubcategory[];
+  subcategories?: BackendSubcategory[];
+};
+
+type BackendSubcategory = {
+  id?: string | number;
+  id_kategori?: string | number | null;
+  kategori_id?: string | number | null;
+  nama?: string;
+  name?: string;
+  jumlah_soal?: number;
+  total_soal?: number;
+  question_count?: number;
 };
 
 type BackendQuestion = {
@@ -59,18 +79,6 @@ type BackendQuestionPayload = {
   }>;
 };
 
-const fallbackCategoryByAlias: Record<string, string> = {
-  twk: "1",
-  tiu: "2",
-  tkp: "3"
-};
-
-const fallbackSubcategoryByAlias: Record<string, string> = {
-  pancasila: "4",
-  nasionalisme: "21",
-  aritmetika: "4"
-};
-
 function unwrapData<T>(value: ApiResponse<T> | T): T {
   return value && typeof value === "object" && "data" in value ? (value as ApiResponse<T>).data : (value as T);
 }
@@ -97,13 +105,11 @@ function getTotal<T>(payload: BackendListResponse<T> | T[], dataLength: number) 
 }
 
 function resolveCategoryId(value: string | undefined) {
-  if (!value) return undefined;
-  return fallbackCategoryByAlias[value] ?? value;
+  return value || undefined;
 }
 
 function resolveSubcategoryId(value: string | null | undefined) {
-  if (!value) return "";
-  return fallbackSubcategoryByAlias[value] ?? value;
+  return value ?? "";
 }
 
 function getCategoryName(question: BackendQuestion) {
@@ -222,7 +228,7 @@ export async function deleteQuestionApi(id: string) {
   await apiClient.delete(`/adm/soal/${id}`);
 }
 
-export async function uploadQuestionsExcelApi(file: File, subcategoryId = "21") {
+export async function uploadQuestionsExcelApi(file: File, subcategoryId?: string) {
   const formData = new FormData();
   formData.append("id_subkategori", resolveSubcategoryId(subcategoryId));
   formData.append("file", file);
@@ -241,7 +247,7 @@ export async function confirmQuestionsImportApi(_jobId?: string): Promise<ApiRes
 }
 
 export async function getQuestionCategoriesApi() {
-  const response = await apiClient.get<BackendListResponse<{ id?: string | number; nama?: string; name?: string }> | Array<{ id?: string | number; nama?: string; name?: string }>>(
+  const response = await apiClient.get<BackendListResponse<BackendCategory> | BackendCategory[]>(
     "/adm/kategori",
     { params: { start: 0, length: 100, search: "" } }
   );
@@ -250,4 +256,25 @@ export async function getQuestionCategoriesApi() {
     id: String(category.id ?? ""),
     name: category.nama ?? category.name ?? "Kategori"
   }));
+}
+
+export async function getQuestionSubcategoriesApi(categoryId?: string) {
+  const response = await apiClient.get<BackendListResponse<BackendSubcategory> | BackendSubcategory[]>(
+    "/adm/subkategori",
+    { params: { start: 0, length: 100, search: "" } }
+  );
+
+  return getListData(response.data)
+    .map<QuestionSubcategory>((subcategory) => ({
+      id: String(subcategory.id ?? ""),
+      categoryId:
+        subcategory.id_kategori !== undefined && subcategory.id_kategori !== null
+          ? String(subcategory.id_kategori)
+          : subcategory.kategori_id !== undefined && subcategory.kategori_id !== null
+            ? String(subcategory.kategori_id)
+            : null,
+      name: subcategory.nama ?? subcategory.name ?? "Subkategori",
+      questionCount: subcategory.jumlah_soal ?? subcategory.total_soal ?? subcategory.question_count
+    }))
+    .filter((subcategory) => !categoryId || !subcategory.categoryId || subcategory.categoryId === categoryId);
 }

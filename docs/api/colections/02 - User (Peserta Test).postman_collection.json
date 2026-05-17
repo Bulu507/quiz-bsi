@@ -14,6 +14,48 @@
       "name": "02.02 - Quiz (start sampai view result)",
       "item": [
         {
+          "name": "Index Quizes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/pst/quiz?start=&length=&search=&kelulusan=&masa=",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "pst",
+                "quiz"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": ""
+                },
+                {
+                  "key": "length",
+                  "value": ""
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "kelulusan",
+                  "value": "",
+                  "description": "EMPTY=all, option: \"lulus\" | \"tidak_lulus\""
+                },
+                {
+                  "key": "masa",
+                  "value": "",
+                  "description": "EMPTY=all, option: \"aktif\" | \"history\". aktif = lagi di-attempt dan belum submit/kena deadline. history = sudah submit/deadline"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Start Quiz",
           "request": {
             "method": "POST",

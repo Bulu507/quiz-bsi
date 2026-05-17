@@ -539,7 +539,7 @@
       ]
     },
     {
-      "name": "01.04 - Quiz dan Komponen Quiz (ON PROGRESS)",
+      "name": "01.04 - Quiz dan Komponen Quiz",
       "item": [
         {
           "name": "Komponen Quiz",
@@ -869,6 +869,129 @@
         }
       ],
       "description": "**\"Quiz\" adalah yang akan dikerjakan peserta**\n\n\"Komponen Quiz\" adalah apa saja yang akan dikerjakan (subkategori/kategori apa, berapa soal, berapa waktu per bagian)\n\n**1 Quiz terdiri atas banyak komponen (1 to many)**\n\n1 komponen itu ada \"selector\": mau randomly dipilih dari **Kategori** XXX atau **Subkategori** XXX? Terus berapa banyak soal yang mau dipilih secara acak dari situ?\n\n- **REORDER KOMPONEN:** Reorder urutan tampil komponen quiz saat ini **by ID komponen**, kemudian **mau ditempatkan di nomor urut ke-berapa sekarang?**"
+    },
+    {
+      "name": "01.05 - User",
+      "item": [
+        {
+          "name": "Index Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/user?start=&length=&search=&show_mode=verified&role=",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": ""
+                },
+                {
+                  "key": "length",
+                  "value": ""
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "show_mode",
+                  "value": "verified",
+                  "description": "EMPTY=all, options: \"verified\" | \"unverified\""
+                },
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "optional, DEFAULT: \"peserta\", options: \"admin\" | \"peserta\" | \"all\""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show Specific User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/user/:id_user",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "user",
+                ":id_user"
+              ],
+              "variable": [
+                {
+                  "key": "id_user",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/user/:id_user/verify",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "user",
+                ":id_user",
+                "verify"
+              ],
+              "variable": [
+                {
+                  "key": "id_user",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Hapus User (kecuali admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/adm/user/:id_user",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "adm",
+                "user",
+                ":id_user"
+              ],
+              "variable": [
+                {
+                  "key": "id_user",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "auth": {

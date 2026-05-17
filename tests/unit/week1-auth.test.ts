@@ -86,6 +86,16 @@ describe("Week 1 Auth Unit", () => {
     expect(repository.login).toHaveBeenCalledWith({ username: "admin", password: "admin" });
   });
 
+  it("validates username/password before calling repository", async () => {
+    const repository = {
+      login: vi.fn()
+    } as unknown as IAuthRepository;
+
+    await expect(loginUseCase(repository, { username: " ", password: "admin" })).rejects.toThrow("Username wajib diisi.");
+    await expect(loginUseCase(repository, { username: "admin", password: "" })).rejects.toThrow("Password wajib diisi.");
+    expect(repository.login).not.toHaveBeenCalled();
+  });
+
   it("resolves redirect path from authenticated role", () => {
     expect(getAuthRedirectPath("ADMIN")).toBe("/dashboard");
     expect(getAuthRedirectPath("PESERTA")).toBe("/student/dashboard");
@@ -127,11 +137,16 @@ describe("Week 1 Auth Unit", () => {
 
   it("allows admin routes for admin and blocks peserta", () => {
     const adminResponse = middleware(makeRequest("/questions", { "quiz-bsi-token": "admin-token", "quiz-bsi-role": "ADMIN" }));
+    const usersResponse = middleware(makeRequest("/users", { "quiz-bsi-token": "admin-token", "quiz-bsi-role": "ADMIN" }));
     const pesertaResponse = middleware(makeRequest("/questions", { "quiz-bsi-token": "peserta-token", "quiz-bsi-role": "PESERTA" }));
+    const pesertaUsersResponse = middleware(makeRequest("/users", { "quiz-bsi-token": "peserta-token", "quiz-bsi-role": "PESERTA" }));
 
     expect(adminResponse.status).toBe(200);
+    expect(usersResponse.status).toBe(200);
     expect(pesertaResponse.status).toBe(307);
     expect(getRedirectPath(pesertaResponse)).toBe("/student/dashboard");
+    expect(pesertaUsersResponse.status).toBe(307);
+    expect(getRedirectPath(pesertaUsersResponse)).toBe("/student/dashboard");
   });
 
   it("allows peserta routes for peserta and blocks admin", () => {

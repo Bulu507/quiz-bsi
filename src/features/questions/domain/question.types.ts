@@ -8,6 +8,13 @@ export interface QuestionCategory {
   name: string;
 }
 
+export interface QuestionSubcategory {
+  id: string;
+  categoryId: string | null;
+  name: string;
+  questionCount?: number;
+}
+
 export interface QuestionOption {
   id: string;
   label: QuestionOptionLabel;

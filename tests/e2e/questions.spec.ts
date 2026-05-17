@@ -45,6 +45,16 @@ const questionTwo = {
 };
 
 const questions = [questionOne, questionTwo];
+const categories = [
+  { id: "twk", nama: "TWK" },
+  { id: "tiu", nama: "TIU" },
+  { id: "tkp", nama: "TKP" }
+];
+const subcategories = [
+  { id: "pancasila", id_kategori: "twk", nama: "Pancasila" },
+  { id: "nasionalisme", id_kategori: "twk", nama: "Nasionalisme" },
+  { id: "aritmetika", id_kategori: "tiu", nama: "Aritmetika" }
+];
 
 function toBackendQuestion(question: typeof questionOne) {
   return {
@@ -114,6 +124,14 @@ async function mockBackend(page: Page) {
     }
 
     await route.fallback();
+  });
+
+  await page.route(`${apiBase}/adm/kategori**`, async (route) => {
+    await json(route, { data: categories });
+  });
+
+  await page.route(`${apiBase}/adm/subkategori**`, async (route) => {
+    await json(route, { data: subcategories });
   });
 
   await page.route(`${apiBase}/adm/soal**`, async (route) => {

@@ -7,7 +7,7 @@ export default function StudentHistoryPage() {
       <PageHeader eyebrow="Murid" title="Riwayat Ujian" />
       <section className="panel">
         <div className="panel-body">
-          <EmptyState title="Belum ada riwayat ujian" description="Endpoint riwayat peserta belum tersedia di collection API." />
+          <EmptyState title="Belum ada riwayat ujian" description="Endpoint peserta belum mengembalikan data riwayat untuk akun ini." />
         </div>
       </section>
     </StudentShell>
