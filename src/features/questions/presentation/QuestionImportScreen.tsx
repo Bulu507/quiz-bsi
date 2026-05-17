@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { Badge, Button, EmptyState, Panel } from "@/shared/components/ui";
 import { uploadQuestionsExcelUseCase } from "../application/use-cases/import-questions.use-case";
-import type { ImportPreviewRow } from "../domain/question.types";
+import type { ImportPreviewRow, ImportQuestionsResult } from "../domain/question.types";
 import { questionRepository } from "../infrastructure/question.repository";
 import { useQuestionMetadata } from "../application/hooks/useQuestionMetadata";
 
@@ -12,18 +12,25 @@ export function QuestionImportScreen() {
   const { error: metadataError, isLoading: isMetadataLoading, subcategories } = useQuestionMetadata();
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState("");
   const [previewRows, setPreviewRows] = useState<ImportPreviewRow[]>([]);
+  const [importResult, setImportResult] = useState<ImportQuestionsResult | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const validRows = useMemo(() => previewRows.filter((row) => row.isValid).length, [previewRows]);
+  const importedCount = importResult?.imported ?? importResult?.inserted ?? importResult?.total ?? validRows;
 
   async function uploadFile(file: File) {
     setIsUploading(true);
     setError(null);
     setPreviewRows([]);
+    setImportResult(null);
+    setSuccessMessage(null);
 
     try {
       const response = await uploadQuestionsExcelUseCase(questionRepository, file, selectedSubcategoryId);
-      setPreviewRows(response.data.preview ?? []);
+      setPreviewRows(response.data?.preview ?? []);
+      setImportResult(response.data ?? {});
+      setSuccessMessage(response.message || "File Excel berhasil diproses.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Gagal import soal.");
     } finally {
@@ -77,10 +84,20 @@ export function QuestionImportScreen() {
 
       {metadataError ? <p className="badge red">{metadataError}</p> : null}
       {error ? <p className="badge red">{error}</p> : null}
+      {successMessage ? (
+        <p className="badge green">
+          {successMessage}
+          {importedCount > 0 ? ` (${importedCount} soal)` : ""}
+        </p>
+      ) : null}
 
       <Panel title="2. Preview & Validasi" action={previewRows.length > 0 ? <Badge tone="green">{validRows} soal valid</Badge> : null}>
         {previewRows.length === 0 ? (
-          <EmptyState title="Belum ada preview" description="Upload file Excel untuk melihat hasil validasi dari endpoint import." />
+          successMessage ? (
+            <EmptyState title="Import berhasil" description="Endpoint import tidak mengirim preview, tetapi request upload sudah berhasil diproses." />
+          ) : (
+            <EmptyState title="Belum ada preview" description="Upload file Excel untuk melihat hasil validasi dari endpoint import." />
+          )
         ) : (
           <table>
             <thead>
@@ -105,7 +122,7 @@ export function QuestionImportScreen() {
         )}
       </Panel>
 
-      {previewRows.length > 0 ? (
+      {previewRows.length > 0 || successMessage ? (
         <div className="actions">
           <Button href="/questions" variant="primary">
             Kembali ke Bank Soal

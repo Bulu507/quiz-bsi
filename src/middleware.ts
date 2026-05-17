@@ -6,7 +6,7 @@ const TOKEN_COOKIE = "quiz-bsi-token";
 const ROLE_COOKIE = "quiz-bsi-role";
 const validRoles: UserRole[] = ["ADMIN", "PESERTA"];
 
-const adminRoutes = ["/dashboard", "/users", "/questions", "/packages", "/classes"];
+const adminRoutes = ["/dashboard", "/users", "/kategori", "/subkategori", "/questions", "/packages", "/classes"];
 const pesertaRoutes = ["/student", "/join", "/exam"];
 const publicRoutes = ["/login", "/register"];
 
@@ -44,6 +44,8 @@ export const config = {
     "/register",
     "/dashboard/:path*",
     "/users/:path*",
+    "/kategori/:path*",
+    "/subkategori/:path*",
     "/questions/:path*",
     "/packages/:path*",
     "/classes/:path*",

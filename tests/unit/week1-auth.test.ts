@@ -138,15 +138,25 @@ describe("Week 1 Auth Unit", () => {
   it("allows admin routes for admin and blocks peserta", () => {
     const adminResponse = middleware(makeRequest("/questions", { "quiz-bsi-token": "admin-token", "quiz-bsi-role": "ADMIN" }));
     const usersResponse = middleware(makeRequest("/users", { "quiz-bsi-token": "admin-token", "quiz-bsi-role": "ADMIN" }));
+    const kategoriResponse = middleware(makeRequest("/kategori", { "quiz-bsi-token": "admin-token", "quiz-bsi-role": "ADMIN" }));
+    const subkategoriResponse = middleware(makeRequest("/subkategori", { "quiz-bsi-token": "admin-token", "quiz-bsi-role": "ADMIN" }));
     const pesertaResponse = middleware(makeRequest("/questions", { "quiz-bsi-token": "peserta-token", "quiz-bsi-role": "PESERTA" }));
     const pesertaUsersResponse = middleware(makeRequest("/users", { "quiz-bsi-token": "peserta-token", "quiz-bsi-role": "PESERTA" }));
+    const pesertaKategoriResponse = middleware(makeRequest("/kategori", { "quiz-bsi-token": "peserta-token", "quiz-bsi-role": "PESERTA" }));
+    const pesertaSubkategoriResponse = middleware(makeRequest("/subkategori", { "quiz-bsi-token": "peserta-token", "quiz-bsi-role": "PESERTA" }));
 
     expect(adminResponse.status).toBe(200);
     expect(usersResponse.status).toBe(200);
+    expect(kategoriResponse.status).toBe(200);
+    expect(subkategoriResponse.status).toBe(200);
     expect(pesertaResponse.status).toBe(307);
     expect(getRedirectPath(pesertaResponse)).toBe("/student/dashboard");
     expect(pesertaUsersResponse.status).toBe(307);
     expect(getRedirectPath(pesertaUsersResponse)).toBe("/student/dashboard");
+    expect(pesertaKategoriResponse.status).toBe(307);
+    expect(getRedirectPath(pesertaKategoriResponse)).toBe("/student/dashboard");
+    expect(pesertaSubkategoriResponse.status).toBe(307);
+    expect(getRedirectPath(pesertaSubkategoriResponse)).toBe("/student/dashboard");
   });
 
   it("allows peserta routes for peserta and blocks admin", () => {

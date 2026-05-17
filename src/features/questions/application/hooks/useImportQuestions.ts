@@ -17,8 +17,8 @@ export function useImportQuestions() {
 
     try {
       const response = await uploadQuestionsExcelUseCase(questionRepository, file);
-      setJobId(response.data.jobId);
-      setPreview(response.data.preview);
+      setJobId(response.data.jobId ?? null);
+      setPreview(response.data.preview ?? []);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Gagal upload file.");
     } finally {

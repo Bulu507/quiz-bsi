@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BarChart3, BookOpen, Boxes, GraduationCap, UserRound, Users } from "lucide-react";
+import { BarChart3, BookOpen, Boxes, FolderOpen, GraduationCap, UserRound, Users } from "lucide-react";
 import { LogoutButton } from "@/features/auth/presentation/LogoutButton";
 import { Brand, Button } from "@/shared/components/ui";
 
 const instructorNav = [
   { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
   { href: "/users", label: "Users", icon: Users },
+  { href: "/kategori", label: "Kategori", icon: FolderOpen },
+  { href: "/subkategori", label: "Subkategori", icon: FolderOpen },
   { href: "/questions", label: "Bank Soal", icon: BookOpen },
   { href: "/packages/new", label: "Paket Ujian", icon: Boxes },
   { href: "/classes", label: "Kelas", icon: GraduationCap }

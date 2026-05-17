@@ -3,6 +3,7 @@ import type { ApiResponse, PaginatedResponse } from "@/shared/types/common.types
 import type { CreateQuestionPayload, UpdateQuestionPayload } from "../domain/IQuestionRepository.interface";
 import type {
   DifficultyLevel,
+  ImportQuestionsResult,
   ImportPreviewRow,
   Question,
   QuestionCategory,
@@ -233,7 +234,7 @@ export async function uploadQuestionsExcelApi(file: File, subcategoryId?: string
   formData.append("id_subkategori", resolveSubcategoryId(subcategoryId));
   formData.append("file", file);
 
-  const response = await apiClient.post<ApiResponse<{ jobId: string; preview: ImportPreviewRow[] }>>(
+  const response = await apiClient.post<ApiResponse<ImportQuestionsResult>>(
     "/adm/soal/import",
     formData,
     { headers: { "Content-Type": "multipart/form-data" } }

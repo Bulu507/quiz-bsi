@@ -47,6 +47,25 @@ async function mockAuthBackend(page: Page) {
     });
   });
 
+  await page.route(`${apiBase}/adm/kategori**`, async (route) => {
+    await json(route, {
+      data: [
+        { id: 1, nama: "TWK", jumlah_subkategori: 1 },
+        { id: 2, nama: "TIU", jumlah_subkategori: 1 }
+      ],
+      recordsFiltered: 2,
+      recordsTotal: 2
+    });
+  });
+
+  await page.route(`${apiBase}/adm/subkategori**`, async (route) => {
+    await json(route, {
+      data: [{ id: 21, id_kategori: 1, nama: "Nasionalisme", kategori: { id: 1, nama: "TWK" }, jumlah_soal: 10 }],
+      recordsFiltered: 1,
+      recordsTotal: 1
+    });
+  });
+
   await page.route(`${apiBase}/pst/quiz**`, async (route) => {
     if (route.request().method() === "GET") {
       await json(route, { data: [] });
@@ -99,6 +118,8 @@ test.describe("Week 1 Auth, Guard, and Layout", () => {
     await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Dashboard" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Users" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Kategori", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Subkategori", exact: true })).toBeVisible();
     await expect(page.getByRole("link", { name: "Bank Soal" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Paket Ujian" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Kelas" })).toBeVisible();
@@ -129,6 +150,12 @@ test.describe("Week 1 Auth, Guard, and Layout", () => {
 
     await page.goto("/questions");
     await expect(page).toHaveURL(/\/student\/dashboard$/);
+
+    await page.goto("/kategori");
+    await expect(page).toHaveURL(/\/student\/dashboard$/);
+
+    await page.goto("/subkategori");
+    await expect(page).toHaveURL(/\/student\/dashboard$/);
   });
 
   test("admin cannot open peserta routes", async ({ page }) => {
@@ -150,6 +177,30 @@ test.describe("Week 1 Auth, Guard, and Layout", () => {
 
     await setSession(page, "PESERTA");
     await page.goto("/users");
+    await expect(page).toHaveURL(/\/student\/dashboard$/);
+  });
+
+  test("admin can open kategori and peserta cannot", async ({ page }) => {
+    await setSession(page, "ADMIN");
+
+    await page.goto("/kategori");
+    await expect(page.getByRole("heading", { name: "Kategori Soal" })).toBeVisible();
+    await expect(page.getByText("TWK")).toBeVisible();
+
+    await setSession(page, "PESERTA");
+    await page.goto("/kategori");
+    await expect(page).toHaveURL(/\/student\/dashboard$/);
+  });
+
+  test("admin can open subkategori and peserta cannot", async ({ page }) => {
+    await setSession(page, "ADMIN");
+
+    await page.goto("/subkategori");
+    await expect(page.getByRole("heading", { name: "Subkategori Soal" })).toBeVisible();
+    await expect(page.getByText("Nasionalisme")).toBeVisible();
+
+    await setSession(page, "PESERTA");
+    await page.goto("/subkategori");
     await expect(page).toHaveURL(/\/student\/dashboard$/);
   });
 

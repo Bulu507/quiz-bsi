@@ -59,3 +59,12 @@ export interface ImportPreviewRow {
   errors: string[];
   isValid: boolean;
 }
+
+export interface ImportQuestionsResult {
+  jobId?: string;
+  preview?: ImportPreviewRow[];
+  imported?: number;
+  total?: number;
+  failed?: number;
+  inserted?: number;
+}
