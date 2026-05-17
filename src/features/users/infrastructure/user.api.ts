@@ -22,6 +22,13 @@ type BackendListResponse<T> = {
   total?: number;
 };
 
+type BackendUserResponse =
+  | BackendUser
+  | {
+      data?: BackendUser | { user?: BackendUser };
+      user?: BackendUser;
+    };
+
 function listData<T>(payload: BackendListResponse<T> | T[]) {
   if (Array.isArray(payload)) return payload;
   if (Array.isArray(payload.data)) return payload.data;
@@ -56,6 +63,16 @@ function mapUser(user: BackendUser): ManagedUser {
   };
 }
 
+function unwrapUser(payload: BackendUserResponse): BackendUser {
+  if ("data" in payload && payload.data) {
+    if ("user" in payload.data && payload.data.user) return payload.data.user;
+    return payload.data as BackendUser;
+  }
+
+  if ("user" in payload && payload.user) return payload.user;
+  return payload as BackendUser;
+}
+
 export async function getUsersApi(filters: UserFilters = {}): Promise<PaginatedResponse<ManagedUser>> {
   const start = filters.start ?? 0;
   const length = filters.length ?? 20;
@@ -78,6 +95,11 @@ export async function getUsersApi(filters: UserFilters = {}): Promise<PaginatedR
       total: totalData(response.data, data.length)
     }
   };
+}
+
+export async function getUserByIdApi(id: string) {
+  const response = await apiClient.get<BackendUserResponse>(`/adm/user/${id}`);
+  return mapUser(unwrapUser(response.data));
 }
 
 export async function verifyUserApi(id: string) {

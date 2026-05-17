@@ -3,6 +3,7 @@ import type { ManagedUser, UserFilters } from "./user.types";
 
 export interface IUserRepository {
   getAll(filters?: UserFilters): Promise<PaginatedResponse<ManagedUser>>;
+  getById(id: string): Promise<ManagedUser>;
   verify(id: string): Promise<void>;
   delete(id: string): Promise<void>;
 }

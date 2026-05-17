@@ -9,7 +9,7 @@ import { deleteUserUseCase } from "../use-cases/delete-user.use-case";
 import { getAllUsersUseCase } from "../use-cases/get-all-users.use-case";
 import { verifyUserUseCase } from "../use-cases/verify-user.use-case";
 
-export function useUserList(initialFilters: UserFilters = { start: 0, length: 20, showMode: "verified", role: "" }) {
+export function useUserList(initialFilters: UserFilters = { start: 0, length: 20, showMode: "", role: "peserta" }) {
   const [filters, setFilters] = useState<UserFilters>(initialFilters);
   const [result, setResult] = useState<PaginatedResponse<ManagedUser> | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -62,5 +62,5 @@ export function useUserList(initialFilters: UserFilters = { start: 0, length: 20
     }
   }
 
-  return { deleteUser, error, filters, isLoading, meta: result?.meta, mutatingId, setFilters, users: result?.data ?? [], verifyUser };
+  return { deleteUser, error, filters, isLoading, loadUsers, meta: result?.meta, mutatingId, setFilters, users: result?.data ?? [], verifyUser };
 }

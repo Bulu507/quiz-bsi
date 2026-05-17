@@ -8,6 +8,8 @@ import { UserRoleBadge, UserStatusBadge } from "./UserBadges";
 
 export function UserManagementScreen() {
   const { deleteUser, error, filters, isLoading, meta, mutatingId, setFilters, users, verifyUser } = useUserList();
+  const verifiedCounter = useUserList({ start: 0, length: 1, showMode: "verified", role: "peserta" });
+  const unverifiedCounter = useUserList({ start: 0, length: 1, showMode: "unverified", role: "peserta" });
   const page = meta?.page ?? Math.floor((filters.start ?? 0) / (filters.length ?? 20)) + 1;
   const limit = meta?.limit ?? filters.length ?? 20;
   const total = meta?.total ?? users.length;
@@ -18,9 +20,45 @@ export function UserManagementScreen() {
     setFilters({ ...filters, [name]: value, start: 0 } as UserFilters);
   }
 
+  async function handleVerify(id: string, name: string) {
+    if (!window.confirm(`Verifikasi ${name}? User akan bisa mengakses quiz.`)) return;
+    await verifyUser(id);
+    await Promise.all([verifiedCounter.loadUsers(), unverifiedCounter.loadUsers()]);
+  }
+
+  async function handleDelete(id: string, name: string) {
+    if (!window.confirm(`Hapus user ${name}? Aksi ini tidak bisa dibatalkan.`)) return;
+    await deleteUser(id);
+    await Promise.all([verifiedCounter.loadUsers(), unverifiedCounter.loadUsers()]);
+  }
+
   return (
     <>
       <PageHeader eyebrow="Admin" title="Manajemen User" />
+
+      <div className="actions">
+        <Button
+          onClick={() => setFilters({ ...filters, showMode: "", start: 0 })}
+          type="button"
+          variant={filters.showMode === "" ? "primary" : "default"}
+        >
+          Semua
+        </Button>
+        <Button
+          onClick={() => setFilters({ ...filters, showMode: "verified", start: 0 })}
+          type="button"
+          variant={filters.showMode === "verified" ? "primary" : "default"}
+        >
+          Terverifikasi ({verifiedCounter.meta?.total ?? 0})
+        </Button>
+        <Button
+          onClick={() => setFilters({ ...filters, showMode: "unverified", start: 0 })}
+          type="button"
+          variant={filters.showMode === "unverified" ? "primary" : "default"}
+        >
+          Belum Verifikasi ({unverifiedCounter.meta?.total ?? 0})
+        </Button>
+      </div>
 
       <div className="toolbar">
         <input
@@ -37,7 +75,6 @@ export function UserManagementScreen() {
           <option value="unverified">Belum Verifikasi</option>
         </select>
         <select aria-label="Role user" className="select" name="role" onChange={updateFilter} value={filters.role ?? ""}>
-          <option value="">Semua role</option>
           <option value="peserta">Peserta</option>
           <option value="admin">Admin</option>
           <option value="all">All</option>
@@ -77,12 +114,15 @@ export function UserManagementScreen() {
                       <td>
                         <div className="actions">
                           {!user.isVerified ? (
-                            <Button disabled={mutatingId === user.id} onClick={() => void verifyUser(user.id)} type="button">
+                            <Button disabled={mutatingId === user.id} onClick={() => void handleVerify(user.id, user.name)} type="button">
                               Verify
                             </Button>
                           ) : null}
+                          <Button href={`/users/${user.id}`} variant="ghost">
+                            Detail
+                          </Button>
                           {user.role !== "admin" ? (
-                            <Button disabled={mutatingId === user.id} onClick={() => void deleteUser(user.id)} type="button">
+                            <Button disabled={mutatingId === user.id} onClick={() => void handleDelete(user.id, user.name)} type="button">
                               Hapus
                             </Button>
                           ) : null}
