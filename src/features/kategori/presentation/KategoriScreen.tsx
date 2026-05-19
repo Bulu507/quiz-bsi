@@ -10,6 +10,8 @@ import type { Kategori, KategoriFilters } from "../domain/kategori.types";
 export function KategoriScreen() {
   const { createKategori, deleteKategori, error, filters, isLoading, kategori, meta, mutatingId, setFilters, updateKategori } = useKategoriList();
   const [newName, setNewName] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isCreateConfirmOpen, setIsCreateConfirmOpen] = useState(false);
   const [editing, setEditing] = useState<Kategori | null>(null);
   const [editName, setEditName] = useState("");
   const page = meta?.page ?? Math.floor((filters.start ?? 0) / (filters.length ?? 20)) + 1;
@@ -21,11 +23,18 @@ export function KategoriScreen() {
     setFilters({ ...filters, search: event.target.value, start: 0 } as KategoriFilters);
   }
 
-  async function submitCreate(event: FormEvent<HTMLFormElement>) {
+  function submitCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!newName.trim()) return;
+    setIsCreateConfirmOpen(true);
+  }
+
+  async function confirmCreate() {
     try {
       await createKategori(newName);
       setNewName("");
+      setIsCreateConfirmOpen(false);
+      setIsCreateOpen(false);
     } catch {
       // Error text is surfaced by useKategoriList.
     }
@@ -54,24 +63,15 @@ export function KategoriScreen() {
 
   return (
     <>
-      <PageHeader eyebrow="Bank Soal" title="Kategori Soal" />
-
-      <section className="panel">
-        <div className="panel-body">
-          <form className="toolbar" onSubmit={submitCreate}>
-            <input
-              aria-label="Nama kategori baru"
-              className="field"
-              onChange={(event) => setNewName(event.target.value)}
-              placeholder="Nama kategori baru"
-              value={newName}
-            />
-            <Button disabled={mutatingId === "new"} type="submit" variant="primary">
-              Tambah Kategori
-            </Button>
-          </form>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Bank Soal"
+        title="Kategori Soal"
+        actions={
+          <Button onClick={() => setIsCreateOpen(true)} type="button" variant="primary">
+            Tambah Kategori
+          </Button>
+        }
+      />
 
       <div className="toolbar">
         <input
@@ -97,6 +97,75 @@ export function KategoriScreen() {
             </form>
           </div>
         </section>
+      ) : null}
+
+      {isCreateOpen && !isCreateConfirmOpen ? (
+        <div aria-modal="true" className="modal-backdrop" role="dialog">
+          <section className="modal status-modal">
+            <form onSubmit={submitCreate}>
+              <div className="modal-head">
+                <div>
+                  <p className="eyebrow">Kategori</p>
+                  <h2>Tambah Kategori</h2>
+                </div>
+              </div>
+              <div className="modal-body">
+                <label>
+                  Nama kategori
+                  <input
+                    aria-label="Nama kategori baru"
+                    className="field"
+                    onChange={(event) => setNewName(event.target.value)}
+                    placeholder="Contoh: TWK"
+                    value={newName}
+                  />
+                </label>
+              </div>
+              <div className="modal-foot">
+                <Button
+                  disabled={mutatingId === "new"}
+                  onClick={() => {
+                    setIsCreateOpen(false);
+                    setNewName("");
+                  }}
+                  type="button"
+                >
+                  Batal
+                </Button>
+                <Button disabled={mutatingId === "new" || !newName.trim()} type="submit" variant="primary">
+                  Lanjutkan
+                </Button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
+
+      {isCreateConfirmOpen ? (
+        <div aria-modal="true" className="modal-backdrop" role="dialog">
+          <section className="modal status-modal">
+            <div className="modal-head">
+              <div>
+                <p className="eyebrow">Konfirmasi</p>
+                <h2>Simpan kategori?</h2>
+              </div>
+            </div>
+            <div className="modal-body">
+              <div className="notice">
+                <strong>{newName}</strong>
+                <p>Kategori baru akan dikirim ke backend dan muncul di daftar kategori.</p>
+              </div>
+            </div>
+            <div className="modal-foot">
+              <Button disabled={mutatingId === "new"} onClick={() => setIsCreateConfirmOpen(false)} type="button">
+                Batal
+              </Button>
+              <Button disabled={mutatingId === "new"} onClick={() => void confirmCreate()} type="button" variant="primary">
+                Simpan Kategori
+              </Button>
+            </div>
+          </section>
+        </div>
       ) : null}
 
       {isLoading ? <LoadingSkeleton rows={3} /> : null}

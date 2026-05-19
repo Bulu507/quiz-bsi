@@ -1,5 +1,6 @@
 import { InstructorShell } from "@/shared/components/layout";
 import { Button, EmptyState, PageHeader, Panel } from "@/shared/components/ui";
+import { BackButton } from "@/shared/components/ui/BackButton";
 
 export default function NewPackagePage() {
   return (
@@ -9,6 +10,7 @@ export default function NewPackagePage() {
         title="Buat Paket Ujian"
         actions={
           <>
+            <BackButton fallbackHref="/dashboard" />
             <Button>Simpan Draft</Button>
             <Button variant="primary">Publish Paket</Button>
           </>

@@ -4,7 +4,7 @@ import { useEffect, useId } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import ImageExtension from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
-import { Bold, Image as ImageIcon, Italic, List, ListOrdered } from "lucide-react";
+import { Bold, Italic, List, ListOrdered } from "lucide-react";
 
 export function QuestionEditor({
   label,
@@ -38,12 +38,6 @@ export function QuestionEditor({
     if (editor.getHTML() === value) return;
     editor.commands.setContent(value, { emitUpdate: false });
   }, [editor, value]);
-
-  function addImage() {
-    const url = window.prompt("Masukkan URL gambar soal");
-    if (!url) return;
-    editor?.chain().focus().setImage({ src: url }).run();
-  }
 
   return (
     <div>
@@ -87,9 +81,6 @@ export function QuestionEditor({
             aria-label="Bullet list"
           >
             <List size={16} />
-          </button>
-          <button className="tool-btn" disabled={!editor} onClick={addImage} type="button" aria-label="Upload gambar">
-            <ImageIcon size={16} />
           </button>
         </span>
         <EditorContent editor={editor} />

@@ -131,7 +131,7 @@ test.describe("Week 2 User Management", () => {
     await expect(page.getByRole("heading", { name: "Detail User" })).toBeVisible();
     await expect(page.getByText("peserta.baru")).toBeVisible();
 
-    await page.getByRole("link", { name: "Kembali" }).click();
+    await page.getByRole("button", { name: "Kembali" }).click();
     await expect(page).toHaveURL(/\/users$/);
 
     page.once("dialog", (dialog) => dialog.accept());

@@ -23,6 +23,8 @@ export function SubkategoriScreen() {
   } = useSubkategoriList();
   const [newCategoryId, setNewCategoryId] = useState("");
   const [newName, setNewName] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isCreateConfirmOpen, setIsCreateConfirmOpen] = useState(false);
   const [editing, setEditing] = useState<Subkategori | null>(null);
   const [editCategoryId, setEditCategoryId] = useState("");
   const [editName, setEditName] = useState("");
@@ -39,11 +41,18 @@ export function SubkategoriScreen() {
     setFilters({ ...filters, search: event.target.value, start: 0 } as SubkategoriFilters);
   }
 
-  async function submitCreate(event: FormEvent<HTMLFormElement>) {
+  function submitCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!newCategoryId || !newName.trim()) return;
+    setIsCreateConfirmOpen(true);
+  }
+
+  async function confirmCreate() {
     try {
       await createSubkategori(newCategoryId, newName);
       setNewName("");
+      setIsCreateConfirmOpen(false);
+      setIsCreateOpen(false);
     } catch {
       // Error text is surfaced by useSubkategoriList.
     }
@@ -75,38 +84,15 @@ export function SubkategoriScreen() {
 
   return (
     <>
-      <PageHeader eyebrow="Bank Soal" title="Subkategori Soal" />
-
-      <section className="panel">
-        <div className="panel-body">
-          <form className="toolbar" onSubmit={submitCreate}>
-            <select
-              aria-label="Kategori subkategori baru"
-              className="select"
-              disabled={categories.length === 0}
-              onChange={(event) => setNewCategoryId(event.target.value)}
-              value={newCategoryId}
-            >
-              {categories.length === 0 ? <option value="">Kategori belum tersedia</option> : null}
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.nama}
-                </option>
-              ))}
-            </select>
-            <input
-              aria-label="Nama subkategori baru"
-              className="field"
-              onChange={(event) => setNewName(event.target.value)}
-              placeholder="Nama subkategori baru"
-              value={newName}
-            />
-            <Button disabled={mutatingId === "new" || categories.length === 0} type="submit" variant="primary">
-              Tambah Subkategori
-            </Button>
-          </form>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Bank Soal"
+        title="Subkategori Soal"
+        actions={
+          <Button disabled={categories.length === 0} onClick={() => setIsCreateOpen(true)} type="button" variant="primary">
+            Tambah Subkategori
+          </Button>
+        }
+      />
 
       <div className="toolbar">
         <input
@@ -139,6 +125,95 @@ export function SubkategoriScreen() {
             </form>
           </div>
         </section>
+      ) : null}
+
+      {isCreateOpen && !isCreateConfirmOpen ? (
+        <div aria-modal="true" className="modal-backdrop" role="dialog">
+          <section className="modal status-modal">
+            <form onSubmit={submitCreate}>
+              <div className="modal-head">
+                <div>
+                  <p className="eyebrow">Subkategori</p>
+                  <h2>Tambah Subkategori</h2>
+                </div>
+              </div>
+              <div className="modal-body stack">
+                <label>
+                  Kategori
+                  <select
+                    aria-label="Kategori subkategori baru"
+                    className="select"
+                    disabled={categories.length === 0}
+                    onChange={(event) => setNewCategoryId(event.target.value)}
+                    value={newCategoryId}
+                  >
+                    {categories.length === 0 ? <option value="">Kategori belum tersedia</option> : null}
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.nama}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Nama subkategori
+                  <input
+                    aria-label="Nama subkategori baru"
+                    className="field"
+                    onChange={(event) => setNewName(event.target.value)}
+                    placeholder="Contoh: Nasionalisme"
+                    value={newName}
+                  />
+                </label>
+              </div>
+              <div className="modal-foot">
+                <Button
+                  disabled={mutatingId === "new"}
+                  onClick={() => {
+                    setIsCreateOpen(false);
+                    setNewName("");
+                  }}
+                  type="button"
+                >
+                  Batal
+                </Button>
+                <Button disabled={mutatingId === "new" || !newCategoryId || !newName.trim()} type="submit" variant="primary">
+                  Lanjutkan
+                </Button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
+
+      {isCreateConfirmOpen ? (
+        <div aria-modal="true" className="modal-backdrop" role="dialog">
+          <section className="modal status-modal">
+            <div className="modal-head">
+              <div>
+                <p className="eyebrow">Konfirmasi</p>
+                <h2>Simpan subkategori?</h2>
+              </div>
+            </div>
+            <div className="modal-body">
+              <div className="notice">
+                <strong>{newName}</strong>
+                <p>
+                  Subkategori baru akan disimpan pada kategori{" "}
+                  {categories.find((category) => category.id === newCategoryId)?.nama ?? newCategoryId}.
+                </p>
+              </div>
+            </div>
+            <div className="modal-foot">
+              <Button disabled={mutatingId === "new"} onClick={() => setIsCreateConfirmOpen(false)} type="button">
+                Batal
+              </Button>
+              <Button disabled={mutatingId === "new"} onClick={() => void confirmCreate()} type="button" variant="primary">
+                Simpan Subkategori
+              </Button>
+            </div>
+          </section>
+        </div>
       ) : null}
 
       {isLoading ? <LoadingSkeleton rows={3} /> : null}

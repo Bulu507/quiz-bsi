@@ -6,6 +6,7 @@ function stripHtml(value: string) {
 
 function validateQuestionPayload(payload: CreateQuestionPayload) {
   if (!payload.categoryId) throw new Error("Kategori soal wajib dipilih.");
+  if (!payload.subcategoryId) throw new Error("Subkategori soal wajib dipilih.");
   if (!stripHtml(payload.text)) throw new Error("Teks soal wajib diisi.");
   if (!stripHtml(payload.explanation)) throw new Error("Pembahasan wajib diisi.");
   if (payload.options.length < 2) throw new Error("Minimal harus ada dua pilihan jawaban.");

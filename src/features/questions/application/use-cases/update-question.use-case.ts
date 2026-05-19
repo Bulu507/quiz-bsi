@@ -6,6 +6,7 @@ function stripHtml(value: string) {
 
 function validateQuestionPayload(payload: UpdateQuestionPayload) {
   if (payload.categoryId !== undefined && !payload.categoryId) throw new Error("Kategori soal wajib dipilih.");
+  if (payload.subcategoryId !== undefined && !payload.subcategoryId) throw new Error("Subkategori soal wajib dipilih.");
   if (payload.text !== undefined && !stripHtml(payload.text)) throw new Error("Teks soal wajib diisi.");
   if (payload.explanation !== undefined && !stripHtml(payload.explanation)) throw new Error("Pembahasan wajib diisi.");
 

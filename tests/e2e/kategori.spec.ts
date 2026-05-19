@@ -109,8 +109,12 @@ test.describe("Week 2 Kategori", () => {
     await expect(page.getByText("TWK")).toBeVisible();
     await expect(page.getByText("TIU")).toBeVisible();
 
-    await page.getByLabel("Nama kategori baru").fill("TKP");
     await page.getByRole("button", { name: "Tambah Kategori" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await page.getByLabel("Nama kategori baru").fill("TKP");
+    await page.getByRole("button", { name: "Lanjutkan" }).click();
+    await expect(page.getByRole("heading", { name: "Simpan kategori?" })).toBeVisible();
+    await page.getByRole("button", { name: "Simpan Kategori" }).click();
     await expect(page.getByText("TKP")).toBeVisible();
 
     await page.getByLabel("Cari kategori").fill("TIU");
@@ -129,7 +133,7 @@ test.describe("Week 2 Kategori", () => {
     await expect(page.getByRole("heading", { name: "Detail Kategori" })).toBeVisible();
     await expect(page.getByText("Nasionalisme")).toBeVisible();
 
-    await page.getByRole("link", { name: "Kembali" }).click();
+    await page.getByRole("button", { name: "Kembali" }).click();
     await expect(page).toHaveURL(/\/kategori$/);
 
     page.once("dialog", (dialog) => dialog.accept());

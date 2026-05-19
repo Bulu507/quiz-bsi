@@ -10,7 +10,6 @@ import type {
   QuestionFilters,
   QuestionOption,
   QuestionOptionLabel,
-  QuestionStatus,
   QuestionSubcategory,
   QuestionType
 } from "../domain/question.types";
@@ -63,7 +62,6 @@ type BackendQuestion = {
   options?: BackendQuestionOption[];
   opsi?: BackendQuestionOption[];
   difficulty?: DifficultyLevel;
-  status?: QuestionStatus;
   type?: QuestionType;
   created_at?: string;
   updated_at?: string;
@@ -158,7 +156,6 @@ function mapBackendQuestion(question: BackendQuestion): Question {
     explanation: question.pembahasan ?? "",
     explanationImageUrl: null,
     options,
-    status: question.status ?? "PUBLISHED",
     createdAt: question.created_at ?? now,
     updatedAt: question.updated_at ?? now
   };
@@ -196,7 +193,6 @@ export async function getQuestionsApi(filters?: QuestionFilters): Promise<Pagina
     .map(mapBackendQuestion)
     .filter((question) => {
       if (filters?.difficulty && question.difficulty !== filters.difficulty) return false;
-      if (filters?.status && question.status !== filters.status) return false;
       return true;
     });
 
@@ -205,7 +201,7 @@ export async function getQuestionsApi(filters?: QuestionFilters): Promise<Pagina
     meta: {
       page,
       limit,
-      total: filters?.difficulty || filters?.status ? data.length : getTotal(response.data, data.length)
+      total: filters?.difficulty ? data.length : getTotal(response.data, data.length)
     }
   };
 }

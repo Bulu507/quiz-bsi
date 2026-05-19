@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, EmptyState, LoadingSkeleton, PageHeader, Panel } from "@/shared/components/ui";
+import { BackButton } from "@/shared/components/ui/BackButton";
 import { useSubkategoriDetail } from "../application/hooks/useSubkategoriDetail";
 
 function formatDate(value: string | null) {
@@ -12,7 +13,7 @@ export function SubkategoriDetailScreen({ subkategoriId }: { subkategoriId: stri
 
   return (
     <>
-      <PageHeader eyebrow="Subkategori" title="Detail Subkategori" actions={<Button href="/subkategori">Kembali</Button>} />
+      <PageHeader eyebrow="Subkategori" title="Detail Subkategori" actions={<BackButton fallbackHref="/subkategori" />} />
 
       {isLoading ? <LoadingSkeleton rows={2} /> : null}
       {error ? <p className="badge red">{error}</p> : null}

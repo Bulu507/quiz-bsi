@@ -115,9 +115,13 @@ test.describe("Week 2 Subkategori", () => {
     await expect(page.getByText("Nasionalisme")).toBeVisible();
     await expect(page.getByText("Numerik")).toBeVisible();
 
+    await page.getByRole("button", { name: "Tambah Subkategori" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
     await page.getByLabel("Kategori subkategori baru").selectOption("1");
     await page.getByLabel("Nama subkategori baru").fill("Pancasila");
-    await page.getByRole("button", { name: "Tambah Subkategori" }).click();
+    await page.getByRole("button", { name: "Lanjutkan" }).click();
+    await expect(page.getByRole("heading", { name: "Simpan subkategori?" })).toBeVisible();
+    await page.getByRole("button", { name: "Simpan Subkategori" }).click();
     await expect(page.getByText("Pancasila")).toBeVisible();
 
     await page.getByLabel("Cari subkategori").fill("Numerik");
@@ -137,7 +141,7 @@ test.describe("Week 2 Subkategori", () => {
     await expect(page.getByRole("heading", { name: "Detail Subkategori" })).toBeVisible();
     await expect(page.getByText("TIU")).toBeVisible();
 
-    await page.getByRole("link", { name: "Kembali" }).click();
+    await page.getByRole("button", { name: "Kembali" }).click();
     await expect(page).toHaveURL(/\/subkategori$/);
 
     page.once("dialog", (dialog) => dialog.accept());

@@ -15,7 +15,6 @@ export function QuestionCard({
       <div className="meta-line">
         <Badge tone="blue">{question.categoryName}</Badge>
         <Badge tone={question.difficulty === "SEDANG" ? "yellow" : "neutral"}>{question.difficulty}</Badge>
-        <Badge tone={question.status === "PUBLISHED" ? "green" : "neutral"}>{question.status}</Badge>
       </div>
       <div className="question-text" dangerouslySetInnerHTML={{ __html: question.text }} />
       <div className="answer-grid">

@@ -6,10 +6,11 @@ import { useQuestionMetadata } from "../application/hooks/useQuestionMetadata";
 import { useQuestions } from "../application/hooks/useQuestions";
 import { QuestionCard } from "./QuestionCard";
 import { QuestionFilters } from "./QuestionFilters";
+import type { QuestionFilters as QuestionFilterValues } from "../domain/question.types";
 
-export function QuestionsList() {
-  const { deletingId, deleteQuestion, error, filters, isLoading, meta, questions, setFilters } = useQuestions({ page: 1, limit: 10 });
-  const { categories, error: metadataError } = useQuestionMetadata();
+export function QuestionsList({ initialFilters = { page: 1, limit: 10 } }: { initialFilters?: QuestionFilterValues }) {
+  const { deletingId, deleteQuestion, error, filters, isLoading, meta, questions, setFilters } = useQuestions(initialFilters);
+  const { categories, error: metadataError, subcategories } = useQuestionMetadata();
   const page = meta?.page ?? filters.page ?? 1;
   const limit = meta?.limit ?? filters.limit ?? 10;
   const total = meta?.total ?? questions.length;
@@ -39,7 +40,7 @@ export function QuestionsList() {
         }
       />
 
-      <QuestionFilters categories={categories} filters={filters} onChange={setFilters} />
+      <QuestionFilters categories={categories} filters={filters} onChange={setFilters} subcategories={subcategories} />
 
       {isLoading ? <LoadingSkeleton rows={3} /> : null}
       {error ? <p className="badge red">{error}</p> : null}
@@ -68,10 +69,10 @@ export function QuestionsList() {
               Total: {total} soal - Halaman {page} dari {totalPages}
             </span>
             <div className="actions">
-              <Button disabled={page <= 1} onClick={() => setFilters({ ...filters, page: Math.max(1, page - 1) })}>
+              <Button disabled={page <= 1} onClick={() => setFilters({ ...filters, page: Math.max(1, page - 1) })} type="button">
                 Sebelumnya
               </Button>
-              <Button disabled={page >= totalPages} onClick={() => setFilters({ ...filters, page: page + 1 })} variant="primary">
+              <Button disabled={page >= totalPages} onClick={() => setFilters({ ...filters, page: page + 1 })} type="button" variant="primary">
                 Berikutnya
               </Button>
             </div>

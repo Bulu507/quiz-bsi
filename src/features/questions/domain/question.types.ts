@@ -1,6 +1,5 @@
 export type QuestionType = "PG" | "PGK" | "BERGAMBAR";
 export type DifficultyLevel = "MUDAH" | "SEDANG" | "SULIT";
-export type QuestionStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 export type QuestionOptionLabel = "A" | "B" | "C" | "D" | "E";
 
 export interface QuestionCategory {
@@ -38,7 +37,6 @@ export interface Question {
   explanation: string;
   explanationImageUrl: string | null;
   options: QuestionOption[];
-  status: QuestionStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,7 +46,6 @@ export interface QuestionFilters {
   categoryId?: string;
   subcategoryId?: string;
   difficulty?: DifficultyLevel;
-  status?: QuestionStatus;
   page?: number;
   limit?: number;
 }

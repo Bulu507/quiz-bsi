@@ -16,9 +16,9 @@ export function useQuestionForm(initialData?: Question) {
     setIsSaving(true);
 
     try {
-      return initialData
+      return await (initialData
         ? updateQuestionUseCase(questionRepository, initialData.id, payload)
-        : createQuestionUseCase(questionRepository, payload);
+        : createQuestionUseCase(questionRepository, payload));
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Gagal menyimpan soal.";
       setError(message);

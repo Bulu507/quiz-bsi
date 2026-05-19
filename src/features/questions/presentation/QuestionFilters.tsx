@@ -1,20 +1,28 @@
 "use client";
 
 import type { ChangeEvent } from "react";
-import type { DifficultyLevel, QuestionCategory, QuestionFilters as QuestionFilterValues, QuestionStatus } from "../domain/question.types";
+import type { DifficultyLevel, QuestionCategory, QuestionFilters as QuestionFilterValues, QuestionSubcategory } from "../domain/question.types";
 
 export function QuestionFilters({
   categories,
   filters,
-  onChange
+  onChange,
+  subcategories
 }: {
   categories: QuestionCategory[];
   filters: QuestionFilterValues;
   onChange: (filters: QuestionFilterValues) => void;
+  subcategories: QuestionSubcategory[];
 }) {
+  const visibleSubcategories = subcategories.filter(
+    (subcategory) => !filters.categoryId || !subcategory.categoryId || subcategory.categoryId === filters.categoryId
+  );
+
   function updateFilter(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = event.target;
-    onChange({ ...filters, [name]: value || undefined, page: 1 });
+    const nextFilters = { ...filters, [name]: value || undefined, page: 1 };
+    if (name === "categoryId") nextFilters.subcategoryId = undefined;
+    onChange(nextFilters);
   }
 
   return (
@@ -35,6 +43,14 @@ export function QuestionFilters({
           </option>
         ))}
       </select>
+      <select className="select" aria-label="Subkategori" name="subcategoryId" onChange={updateFilter} value={filters.subcategoryId ?? ""}>
+        <option value="">Semua subkategori</option>
+        {visibleSubcategories.map((subcategory) => (
+          <option key={subcategory.id} value={subcategory.id}>
+            {subcategory.name}
+          </option>
+        ))}
+      </select>
       <select
         className="select"
         aria-label="Kesulitan"
@@ -46,14 +62,6 @@ export function QuestionFilters({
         {(["MUDAH", "SEDANG", "SULIT"] satisfies DifficultyLevel[]).map((level) => (
           <option key={level} value={level}>
             {level}
-          </option>
-        ))}
-      </select>
-      <select className="select" aria-label="Status" name="status" onChange={updateFilter} value={filters.status ?? ""}>
-        <option value="">Semua status</option>
-        {(["DRAFT", "PUBLISHED", "ARCHIVED"] satisfies QuestionStatus[]).map((status) => (
-          <option key={status} value={status}>
-            {status}
           </option>
         ))}
       </select>

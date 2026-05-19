@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, EmptyState, LoadingSkeleton, PageHeader, Panel } from "@/shared/components/ui";
+import { EmptyState, LoadingSkeleton, PageHeader, Panel } from "@/shared/components/ui";
+import { BackButton } from "@/shared/components/ui/BackButton";
 import { useUserDetail } from "../application/hooks/useUserDetail";
 import { UserRoleBadge, UserStatusBadge } from "./UserBadges";
 
@@ -9,7 +10,7 @@ export function UserDetailScreen({ userId }: { userId: string }) {
 
   return (
     <>
-      <PageHeader eyebrow="Manajemen User" title="Detail User" actions={<Button href="/users">Kembali</Button>} />
+      <PageHeader eyebrow="Manajemen User" title="Detail User" actions={<BackButton fallbackHref="/users" />} />
 
       {isLoading ? <LoadingSkeleton rows={2} /> : null}
       {error ? <p className="badge red">{error}</p> : null}
