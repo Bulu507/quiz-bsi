@@ -1,6 +1,12 @@
 import { Badge, Button } from "@/shared/components/ui";
 import type { Question } from "../domain/question.types";
 
+function getScoreClass(score: number) {
+  if (score > 0) return "score-badge positive";
+  if (score < 0) return "score-badge negative";
+  return "score-badge neutral";
+}
+
 export function QuestionCard({
   isDeleting,
   onDelete,
@@ -20,7 +26,8 @@ export function QuestionCard({
       <div className="answer-grid">
         {question.options.map((option) => (
           <span key={option.id}>
-            {option.label}. {option.text}
+            <strong>{option.label}.</strong> <span dangerouslySetInnerHTML={{ __html: option.text }} />{" "}
+            <span className={getScoreClass(option.scoreValue)}>{option.scoreValue}</span>
           </span>
         ))}
       </div>

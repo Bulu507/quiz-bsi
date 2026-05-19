@@ -3,25 +3,34 @@
 import type { QuestionOptionLabel } from "../domain/question.types";
 
 export function OptionInput({
-  isCorrect,
   label,
-  onCorrect,
+  onScoreChange,
   onTextChange,
-  type = "radio",
+  score,
   value
 }: {
-  isCorrect: boolean;
   label: QuestionOptionLabel;
-  onCorrect: () => void;
+  onScoreChange: (value: number) => void;
   onTextChange: (value: string) => void;
-  type?: "checkbox" | "radio";
+  score: number;
   value: string;
 }) {
   return (
     <div className="option-row">
-      <input aria-label={`Jawaban benar ${label}`} checked={isCorrect} name="correct" onChange={onCorrect} type={type} />
       <span className="option-label">{label}</span>
       <input aria-label={`Pilihan ${label}`} className="field" onChange={(event) => onTextChange(event.target.value)} value={value} />
+      <label className="score-field">
+        Poin
+        <input
+          aria-label={`Poin pilihan ${label}`}
+          className="field"
+          max={5}
+          min={-5}
+          onChange={(event) => onScoreChange(Number(event.target.value))}
+          type="number"
+          value={score}
+        />
+      </label>
     </div>
   );
 }

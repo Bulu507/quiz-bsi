@@ -12,16 +12,6 @@ import { QuestionEditor } from "./QuestionEditor";
 
 const optionLabels: QuestionOptionLabel[] = ["A", "B", "C", "D", "E"];
 
-function normalizeSingleCorrectOption(options: Question["options"]) {
-  const selectedIndex = Math.max(0, options.findIndex((option) => option.isCorrect));
-
-  return options.map((option, index) => ({
-    ...option,
-    isCorrect: index === selectedIndex,
-    scoreValue: index === selectedIndex ? Math.max(option.scoreValue, 1) : 0
-  }));
-}
-
 function createInitialPayload(initialData?: Question): CreateQuestionPayload {
   return initialData
     ? {
@@ -36,7 +26,8 @@ function createInitialPayload(initialData?: Question): CreateQuestionPayload {
         tags: initialData.tags,
         explanation: initialData.explanation,
         explanationImageUrl: initialData.explanationImageUrl,
-        options: normalizeSingleCorrectOption(initialData.options)
+        quickTips: initialData.quickTips,
+        options: initialData.options
       }
     : {
         categoryId: "",
@@ -50,13 +41,14 @@ function createInitialPayload(initialData?: Question): CreateQuestionPayload {
         tags: [],
         explanation: "",
         explanationImageUrl: null,
+        quickTips: "",
         options: optionLabels.slice(0, 4).map((label, index) => ({
           id: label.toLowerCase(),
           label,
           text: "",
           imageUrl: null,
           isCorrect: index === 1,
-          scoreValue: index === 1 ? 1 : 0
+          scoreValue: index === 1 ? 5 : 0
         })),
       };
 }
@@ -158,22 +150,24 @@ export function QuestionForm({ initialData }: { initialData?: Question }) {
         <div className="stack">
           {payload.options.map((option, index) => (
             <OptionInput
-              isCorrect={option.isCorrect}
               key={option.id}
               label={option.label}
-              onCorrect={() =>
+              onScoreChange={(value) => {
+                const scoreValue = Math.max(-5, Math.min(5, value));
                 setPayload((current) => ({
                   ...current,
-                  options: current.options.map((item) => ({ ...item, isCorrect: item.id === option.id, scoreValue: item.id === option.id ? 1 : 0 }))
-                }))
-              }
+                  options: current.options.map((item, itemIndex) =>
+                    itemIndex === index ? { ...item, isCorrect: scoreValue > 0, scoreValue } : item
+                  )
+                }));
+              }}
               onTextChange={(value) =>
                 setPayload((current) => ({
                   ...current,
                   options: current.options.map((item, itemIndex) => (itemIndex === index ? { ...item, text: value } : item))
                 }))
               }
-              type="radio"
+              score={option.scoreValue}
               value={option.text}
             />
           ))}
@@ -186,6 +180,18 @@ export function QuestionForm({ initialData }: { initialData?: Question }) {
           onChange={(value) => setPayload((current) => ({ ...current, explanation: value }))}
           value={payload.explanation}
         />
+      </Panel>
+
+      <Panel title="Trik Cepat">
+        <label>
+          Trik cepat opsional
+          <textarea
+            aria-label="Trik cepat"
+            className="field textarea"
+            onChange={(event) => setPayload((current) => ({ ...current, quickTips: event.target.value }))}
+            value={payload.quickTips ?? ""}
+          />
+        </label>
       </Panel>
 
       {error ? <p className="badge red">{error}</p> : null}

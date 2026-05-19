@@ -32,6 +32,7 @@ describe("Week 3 Bank Soal API", () => {
             subkategori: { id: 21, nama: "Nasionalisme" },
             content: "<p>Rumusan dasar negara...</p>",
             pembahasan: "<p>Pembahasan</p>",
+            trik_cepat: "Ingat sejarah sidang BPUPKI.",
             options: [
               { id: 1, content: "A", poin: 0 },
               { id: 2, content: "B", poin: 5 }
@@ -62,7 +63,8 @@ describe("Week 3 Bank Soal API", () => {
       categoryName: "TWK",
       subcategoryId: "21",
       text: "<p>Rumusan dasar negara...</p>",
-      difficulty: "MUDAH"
+      difficulty: "MUDAH",
+      quickTips: "Ingat sejarah sidang BPUPKI."
     });
     expect(result.data[0].options[1]).toMatchObject({ label: "B", text: "B", isCorrect: true, scoreValue: 5 });
   });
@@ -83,6 +85,7 @@ describe("Week 3 Bank Soal API", () => {
       tags: [],
       explanation: "<p>Pembahasan</p>",
       explanationImageUrl: null,
+      quickTips: "Gunakan eliminasi opsi.",
       options: [
         { id: "a", label: "A" as const, text: "Pilihan A", imageUrl: null, isCorrect: false, scoreValue: 0 },
         { id: "b", label: "B" as const, text: "Pilihan B", imageUrl: null, isCorrect: true, scoreValue: 5 }
@@ -95,6 +98,7 @@ describe("Week 3 Bank Soal API", () => {
       kategori: { id: 1, nama: "TWK" },
       content: payload.text,
       pembahasan: payload.explanation,
+      trik_cepat: payload.quickTips,
       options: [
         { id: 1, content: "Pilihan A", poin: 0 },
         { id: 2, content: "Pilihan B", poin: 5 }
@@ -117,7 +121,7 @@ describe("Week 3 Bank Soal API", () => {
     const expectedPayload = {
       content: "<p>Soal baru</p>",
       pembahasan: "<p>Pembahasan</p>",
-      trik_cepat: null,
+      trik_cepat: "Gunakan eliminasi opsi.",
       id_subkat: 21,
       options: [
         { content: "Pilihan A", poin: 0 },

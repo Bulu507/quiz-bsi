@@ -155,6 +155,7 @@ function mapBackendQuestion(question: BackendQuestion): Question {
     tags: [],
     explanation: question.pembahasan ?? "",
     explanationImageUrl: null,
+    quickTips: question.trik_cepat ?? null,
     options,
     createdAt: question.created_at ?? now,
     updatedAt: question.updated_at ?? now
@@ -167,7 +168,7 @@ function toBackendPayload(payload: CreateQuestionPayload | UpdateQuestionPayload
   return {
     content: payload.text ?? "",
     pembahasan: payload.explanation ?? "",
-    trik_cepat: null,
+    trik_cepat: payload.quickTips ?? null,
     id_subkat: Number.isNaN(Number(idSubkat)) ? idSubkat : Number(idSubkat),
     options: (payload.options ?? []).map((option) => ({
       content: option.text,

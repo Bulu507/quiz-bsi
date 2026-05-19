@@ -36,6 +36,7 @@ export interface Question {
   tags: string[];
   explanation: string;
   explanationImageUrl: string | null;
+  quickTips: string | null;
   options: QuestionOption[];
   createdAt: string;
   updatedAt: string;

@@ -5,7 +5,6 @@ function stripHtml(value: string) {
 }
 
 function validateQuestionPayload(payload: UpdateQuestionPayload) {
-  if (payload.categoryId !== undefined && !payload.categoryId) throw new Error("Kategori soal wajib dipilih.");
   if (payload.subcategoryId !== undefined && !payload.subcategoryId) throw new Error("Subkategori soal wajib dipilih.");
   if (payload.text !== undefined && !stripHtml(payload.text)) throw new Error("Teks soal wajib diisi.");
   if (payload.explanation !== undefined && !stripHtml(payload.explanation)) throw new Error("Pembahasan wajib diisi.");
@@ -17,8 +16,9 @@ function validateQuestionPayload(payload: UpdateQuestionPayload) {
     if (emptyOption) throw new Error(`Pilihan ${emptyOption.label} wajib diisi.`);
 
     const correctOptions = payload.options.filter((option) => option.isCorrect);
-    if (correctOptions.length === 0) throw new Error("Minimal satu jawaban benar wajib dipilih.");
-    if (payload.type === "PG" && correctOptions.length > 1) throw new Error("Soal PG hanya boleh memiliki satu jawaban benar.");
+    if (correctOptions.length === 0) throw new Error("Minimal satu opsi wajib memiliki poin lebih dari 0.");
+    const outOfRangeOption = payload.options.find((option) => option.scoreValue < -5 || option.scoreValue > 5);
+    if (outOfRangeOption) throw new Error(`Poin pilihan ${outOfRangeOption.label} harus berada di rentang -5 sampai 5.`);
   }
 }
 

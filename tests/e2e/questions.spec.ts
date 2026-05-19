@@ -259,12 +259,13 @@ test.describe("Week 2 Questions", () => {
     await expect(page.getByText("Pilihan Jawaban")).toBeVisible();
 
     await page.getByLabel("Teks soal").fill("Jika 2 + 3 = ...");
-    await page.getByLabel("Pilihan A").fill("4");
-    await page.getByLabel("Pilihan B").fill("5");
-    await page.getByLabel("Pilihan C").fill("6");
-    await page.getByLabel("Pilihan D").fill("7");
-    await page.getByLabel("Jawaban benar B").check();
+    await page.getByRole("textbox", { name: "Pilihan A" }).fill("4");
+    await page.getByRole("textbox", { name: "Pilihan B" }).fill("5");
+    await page.getByRole("textbox", { name: "Pilihan C" }).fill("6");
+    await page.getByRole("textbox", { name: "Pilihan D" }).fill("7");
+    await page.getByLabel("Poin pilihan B").fill("5");
     await page.getByLabel("Pembahasan").fill("2 + 3 sama dengan 5.");
+    await page.getByLabel("Trik cepat").fill("Jumlahkan angka satuan.");
     await page.getByRole("button", { name: "Simpan Soal" }).click();
 
     await expect(page).toHaveURL(/\/questions$/);
